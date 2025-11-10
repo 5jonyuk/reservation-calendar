@@ -9,7 +9,7 @@ public final class ReservationMapper {
     private ReservationMapper() {
     }
 
-    public static ReservationCreateResponse toResponse(Reservation reservation) {
+    public static ReservationCreateResponse toCreateResponse(Reservation reservation) {
         return new ReservationCreateResponse(
                 reservation.getId(),
                 reservation.getCustomerName(),

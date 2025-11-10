@@ -18,7 +18,7 @@ public class ReservationController {
     @PostMapping
     public ReservationCreateResponse createReservation(@RequestBody ReservationCreateRequest request) {
         Reservation savedReservation = reservationService.createReservation(request);
-        return ReservationMapper.toResponse(savedReservation);
+        return ReservationMapper.toCreateResponse(savedReservation);
     }
 
     @GetMapping("/month")
