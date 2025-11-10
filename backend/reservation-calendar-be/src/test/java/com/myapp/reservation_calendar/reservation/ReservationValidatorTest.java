@@ -1,5 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
+import com.myapp.reservation_calendar.reservation.util.TimeConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -13,6 +14,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ReservationValidatorTest {
     ReservationValidator validator = new ReservationValidator();
+    LocalDateTime nowKst = TimeConverter.nowKst();
 
     @Test
     void 정상적인_예약_정보는_예외_없이_통과된다(){
@@ -94,7 +96,8 @@ class ReservationValidatorTest {
                 .customerPhone("010-1234-5678")
                 .menu("브라우니")
                 .amount(5500)
-                .pickupTime(LocalDateTime.now().minusHours(2))
+                .pickupDate(nowKst.toLocalDate())
+                .pickupTime(nowKst.toLocalTime().minusHours(2))
                 .build();
 
         assertThatThrownBy(() -> validator.validate(reservation))

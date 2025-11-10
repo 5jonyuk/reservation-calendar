@@ -15,6 +15,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 class ReservationServiceTest {
+    LocalDateTime nowKst = LocalDateTime.now();
     @Mock
     private ReservationJpaRepository reservationJpaRepository;
 
@@ -36,8 +37,8 @@ class ReservationServiceTest {
                 "010-1234-5678",
                 "브라우니",
                 5000,
-                LocalDateTime.now().plusHours(1),
-                null,
+                nowKst.toLocalDate(),
+                nowKst.toLocalTime().plusHours(1),
                 false,
                 false
         );
@@ -71,8 +72,8 @@ class ReservationServiceTest {
                 "010-1234-5678",
                 "브라우니",
                 -5000,
-                LocalDateTime.now().plusHours(1),
-                null,
+                nowKst.toLocalDate(),
+                nowKst.toLocalTime().plusHours(1),
                 false,
                 false
         );
@@ -80,7 +81,7 @@ class ReservationServiceTest {
         doThrow(IllegalArgumentException.class)
                 .when(reservationValidator).validate(any(Reservation.class));
 
-        assertThatThrownBy(()-> reservationService.createReservation(request))
+        assertThatThrownBy(() -> reservationService.createReservation(request))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 }
