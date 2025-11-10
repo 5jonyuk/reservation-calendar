@@ -26,6 +26,9 @@ public class Reservation {
     @Column(nullable = false)
     private String menu;
 
+    @Column(nullable = false)
+    private Integer amount;
+
     private LocalDateTime pickupTime;
     private LocalDateTime dropTime;
     private boolean paymentCompleted;
@@ -41,10 +44,21 @@ public class Reservation {
                 .customerName(request.customerName())
                 .customerPhone(request.customerPhone())
                 .menu(request.menu())
+                .amount(request.amount())
                 .pickupTime(request.pickupTime())
                 .dropTime(request.dropTime())
                 .paymentCompleted(request.paymentCompleted())
                 .pickupCompleted(request.pickupCompleted())
                 .build();
+    }
+
+    @PostPersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.lastUpdatedAt = LocalDateTime.now();
     }
 }

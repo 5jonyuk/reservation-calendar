@@ -9,6 +9,7 @@ public final class ReservationMapper {
                 reservation.getCustomerName(),
                 reservation.getCustomerPhone(),
                 reservation.getMenu(),
+                reservation.getAmount(),
                 reservation.getPickupTime(),
                 reservation.getDropTime(),
                 reservation.isPaymentCompleted(),

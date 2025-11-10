@@ -6,6 +6,7 @@ public record ReservationRequest(
         String customerName,
         String customerPhone,
         String menu,
+        Integer amount,
         LocalDateTime pickupTime,
         LocalDateTime dropTime,
         boolean paymentCompleted,
