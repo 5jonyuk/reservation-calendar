@@ -1,19 +1,28 @@
 package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
-import org.junit.jupiter.api.BeforeEach;
+import com.myapp.reservation_calendar.reservation.dto.ReservationDayResponse;
+import com.myapp.reservation_calendar.reservation.dto.ReservationDetailResponse;
+import com.myapp.reservation_calendar.reservation.dto.ReservationMonthReadResponse;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.YearMonth;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ReservationServiceTest {
     LocalDateTime nowKst = LocalDateTime.now();
     @Mock
@@ -24,11 +33,6 @@ class ReservationServiceTest {
 
     @InjectMocks
     private ReservationService reservationService;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
 
     @Test
     void 예약_생성_성공() {
@@ -83,5 +87,106 @@ class ReservationServiceTest {
 
         assertThatThrownBy(() -> reservationService.createReservation(request))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 월별_예약조회_성공() {
+        YearMonth yearMonth = YearMonth.of(2025, 11);
+        LocalDate startDay = yearMonth.atDay(1);
+        LocalDate endDay = yearMonth.atEndOfMonth();
+
+        Reservation r = Reservation.builder()
+                .customerName("오종혁")
+                .customerPhone("010-1234-5678")
+                .menu("브라우니")
+                .amount(5000)
+                .pickupDate(LocalDate.of(2025, 11, 11))
+                .pickupTime(LocalTime.of(14, 0))
+                .build();
+        when(reservationJpaRepository.findByPickupDateBetween(startDay, endDay)).thenReturn(List.of(r));
+
+        List<ReservationMonthReadResponse> result = reservationService.findByMonth(yearMonth);
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).pickupDate()).isEqualTo(LocalDate.of(2025, 11, 11));
+        assertThat(result.get(0).pickupTime()).isEqualTo(LocalTime.of(14, 0));
+    }
+
+    @Test
+    void 월별예약조회_예약없음() {
+        YearMonth yearMonth = YearMonth.of(2025, 11);
+        LocalDate startDay = yearMonth.atDay(1);
+        LocalDate endDay = yearMonth.atEndOfMonth();
+
+        when(reservationJpaRepository.findByPickupDateBetween(startDay, endDay)).thenReturn(List.of());
+
+        List<ReservationMonthReadResponse> result = reservationService.findByMonth(yearMonth);
+
+        assertThat(result).isEmpty() ;
+    }
+
+    @Test
+    void 특정날짜_예약조회_성공(){
+        LocalDate date = LocalDate.of(2025, 11, 11);
+
+        Reservation r = Reservation.builder()
+                .customerName("오종혁")
+                .customerPhone("010-1234-5678")
+                .menu("브라우니")
+                .amount(5000)
+                .pickupDate(date)
+                .pickupTime(LocalTime.of(14, 0))
+                .build();
+        when(reservationJpaRepository.findByPickupDate(date)).thenReturn(List.of(r));
+
+        List<ReservationDayResponse> result = reservationService.getReservationDay(date);
+
+        assertThat(result.get(0).pickupDate()).isEqualTo(date);
+        assertThat(result.get(0).pickupTime()).isEqualTo(LocalTime.of(14, 0));
+        assertThat(result.get(0).customerName()).isEqualTo("오종혁");
+    }
+
+    @Test
+    void 특정날짜_예약없음(){
+        LocalDate date = LocalDate.of(2025, 11, 11);
+
+        when(reservationJpaRepository.findByPickupDate(date)).thenReturn(List.of());
+
+        List<ReservationDayResponse> result = reservationService.getReservationDay(date);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    void 예약상세조회_존재하지않는경우_예외발생() {
+        Long id = 999L;
+        when(reservationJpaRepository.findById(id))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> reservationService.getReservationDetail(id))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 예약상세조회_정상동작() {
+        Long id = 1L;
+        Reservation r = Reservation.builder()
+                .pickupDate(LocalDate.of(2025, 11, 10))
+                .pickupTime(LocalTime.of(14, 0))
+                .customerName("오종혁")
+                .menu("브라우니")
+                .amount(5000)
+                .build();
+
+        when(reservationJpaRepository.findById(id))
+                .thenReturn(Optional.of(r));
+
+        ReservationDetailResponse result = reservationService.getReservationDetail(id);
+
+        assertThat(result.customerName()).isEqualTo("오종혁");
+        assertThat(result.menu()).isEqualTo("브라우니");
+        assertThat(result.pickupDate()).isEqualTo("2025-11-10");
+        assertThat(result.pickupTime()).isEqualTo("14:00:00");
+        assertThat(result.amount()).isEqualTo(5000);
     }
 }
