@@ -30,7 +30,7 @@ class ReservationTest {
         assertThat(reservation.getAmount()).isEqualTo(3000);
         assertThat(reservation.getPickupTime()).isEqualTo(LocalDateTime.of(2025, 11, 10, 15, 0));
         assertThat(reservation.getDropTime()).isNull();
-        assertThat(reservation.isPaymentCompleted()).isFalse();
-        assertThat(reservation.isPickupCompleted()).isFalse();
+        assertThat(reservation.getPaymentCompleted()).isFalse();
+        assertThat(reservation.getPickupCompleted()).isFalse();
     }
 }

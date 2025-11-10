@@ -49,8 +49,8 @@ class ReservationServiceTest {
                 .menu(savedReservation.getMenu())
                 .amount(savedReservation.getAmount())
                 .pickupTime(savedReservation.getPickupTime())
-                .paymentCompleted(savedReservation.isPaymentCompleted())
-                .pickupCompleted(savedReservation.isPickupCompleted())
+                .paymentCompleted(savedReservation.getPaymentCompleted())
+                .pickupCompleted(savedReservation.getPickupCompleted())
                 .createdAt(LocalDateTime.now())
                 .build();
         when(reservationJpaRepository.save(any(Reservation.class))).thenReturn(savedReservation);
