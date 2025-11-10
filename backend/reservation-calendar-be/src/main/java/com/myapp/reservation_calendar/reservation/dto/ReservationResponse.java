@@ -1,6 +1,8 @@
 package com.myapp.reservation_calendar.reservation.dto;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public record ReservationResponse(
         Long id,
@@ -8,11 +10,11 @@ public record ReservationResponse(
         String customerPhone,
         String menu,
         Integer amount,
-        LocalDateTime pickupTime,
-        LocalDateTime dropTime,
+        LocalDate pickupDate,
+        LocalTime pickupTime,
         Boolean paymentCompleted,
         Boolean pickupCompleted,
         LocalDateTime createdAt,
         LocalDateTime lastUpdatedAt
-        ) {
+) {
 }
