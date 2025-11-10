@@ -12,8 +12,8 @@ public final class ReservationMapper {
                 reservation.getAmount(),
                 reservation.getPickupTime(),
                 reservation.getDropTime(),
-                reservation.isPaymentCompleted(),
-                reservation.isPickupCompleted(),
+                reservation.getPaymentCompleted(),
+                reservation.getPickupCompleted(),
                 reservation.getCreatedAt(),
                 reservation.getLastUpdatedAt()
         );

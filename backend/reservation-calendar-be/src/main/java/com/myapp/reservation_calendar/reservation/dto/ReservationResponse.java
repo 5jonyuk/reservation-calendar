@@ -10,8 +10,8 @@ public record ReservationResponse(
         Integer amount,
         LocalDateTime pickupTime,
         LocalDateTime dropTime,
-        boolean paymentCompleted,
-        boolean pickupCompleted,
+        Boolean paymentCompleted,
+        Boolean pickupCompleted,
         LocalDateTime createdAt,
         LocalDateTime lastUpdatedAt
         ) {

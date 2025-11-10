@@ -31,8 +31,8 @@ public class Reservation {
 
     private LocalDateTime pickupTime;
     private LocalDateTime dropTime;
-    private boolean paymentCompleted;
-    private boolean pickupCompleted;
+    private Boolean paymentCompleted;
+    private Boolean pickupCompleted;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -52,7 +52,7 @@ public class Reservation {
                 .build();
     }
 
-    @PostPersist
+    @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }

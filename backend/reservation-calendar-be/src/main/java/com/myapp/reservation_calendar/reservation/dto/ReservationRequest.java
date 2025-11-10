@@ -9,7 +9,7 @@ public record ReservationRequest(
         Integer amount,
         LocalDateTime pickupTime,
         LocalDateTime dropTime,
-        boolean paymentCompleted,
-        boolean pickupCompleted
+        Boolean paymentCompleted,
+        Boolean pickupCompleted
 ) {
 }
