@@ -26,9 +26,7 @@ public class Reservation {
     @Column(nullable = false)
     private String menu;
 
-    @Column(nullable = false)
     private LocalDateTime pickupTime;
-
     private LocalDateTime dropTime;
     private boolean paymentCompleted;
     private boolean pickupCompleted;
