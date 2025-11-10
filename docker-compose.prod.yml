@@ -1,0 +1,19 @@
+services:
+  postgres:
+    restart: always
+    ports:
+      - "5433:5432"
+
+  backend:
+    build: ./backend/reservation-calendar-be
+    restart: always
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build: ./frontend/reservation-calendar-fe
+    restart: always
+    ports:
+      - "80:80" # 배포 시엔 Nginx가 80포트로 서비스
+
+# 실행 명령어: docker-compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d -> 뒤에 오는 파일이 앞에 오는 파일을 덮어씀 (순서 중요!)
