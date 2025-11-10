@@ -1,6 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
-import com.myapp.reservation_calendar.reservation.dto.ReservationRequest;
+import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,7 +41,7 @@ public class Reservation {
 
     private LocalDateTime lastUpdatedAt;
 
-    public static Reservation from(ReservationRequest request) {
+    public static Reservation from(ReservationCreateRequest request) {
         return Reservation.builder()
                 .customerName(request.customerName())
                 .customerPhone(request.customerPhone())

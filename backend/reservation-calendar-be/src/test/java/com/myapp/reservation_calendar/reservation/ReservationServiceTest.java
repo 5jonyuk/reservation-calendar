@@ -1,6 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
-import com.myapp.reservation_calendar.reservation.dto.ReservationRequest;
+import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -32,7 +32,7 @@ class ReservationServiceTest {
 
     @Test
     void 예약_생성_성공() {
-        ReservationRequest request = new ReservationRequest(
+        ReservationCreateRequest request = new ReservationCreateRequest(
                 "오종혁",
                 "010-1234-5678",
                 "브라우니",
@@ -67,7 +67,7 @@ class ReservationServiceTest {
 
     @Test
     void 예약_생성_실패() {
-        ReservationRequest request = new ReservationRequest(
+        ReservationCreateRequest request = new ReservationCreateRequest(
                 "오종혁",
                 "010-1234-5678",
                 "브라우니",

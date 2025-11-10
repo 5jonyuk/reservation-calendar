@@ -1,6 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
-import com.myapp.reservation_calendar.reservation.dto.ReservationRequest;
+import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
 import com.myapp.reservation_calendar.reservation.util.TimeConverter;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +12,7 @@ class ReservationTest {
     LocalDateTime nowKtc = TimeConverter.nowKst();
     @Test
     void from_메서드는_Request의_필드를_정확히_Reservation으로_복사한다() {
-        ReservationRequest request = new ReservationRequest(
+        ReservationCreateRequest request = new ReservationCreateRequest(
                 "오종혁",
                 "010-1234-5678",
                 "아메리카노",
