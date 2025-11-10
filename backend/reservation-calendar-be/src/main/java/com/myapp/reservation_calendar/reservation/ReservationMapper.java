@@ -1,9 +1,15 @@
 package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.ReservationCreateResponse;
+import com.myapp.reservation_calendar.reservation.dto.ReservationDayResponse;
+import com.myapp.reservation_calendar.reservation.dto.ReservationDetailResponse;
+import com.myapp.reservation_calendar.reservation.dto.ReservationMonthReadResponse;
 
 public final class ReservationMapper {
-    public static ReservationCreateResponse toResponse(Reservation reservation){
+    private ReservationMapper() {
+    }
+
+    public static ReservationCreateResponse toResponse(Reservation reservation) {
         return new ReservationCreateResponse(
                 reservation.getId(),
                 reservation.getCustomerName(),
@@ -16,6 +22,35 @@ public final class ReservationMapper {
                 reservation.getPickupCompleted(),
                 reservation.getCreatedAt(),
                 reservation.getLastUpdatedAt()
+        );
+    }
+
+    public static ReservationMonthReadResponse toMonthReadResponse(Reservation reservation) {
+        return new ReservationMonthReadResponse(
+                reservation.getPickupDate(),
+                reservation.getPickupTime()
+        );
+    }
+
+    public static ReservationDetailResponse toDetailResponse(Reservation reservation) {
+        return new ReservationDetailResponse(
+                reservation.getPickupDate(),
+                reservation.getPickupTime(),
+                reservation.getCustomerName(),
+                reservation.getCustomerPhone(),
+                reservation.getMenu(),
+                reservation.getAmount(),
+                reservation.getPaymentCompleted(),
+                reservation.getPickupCompleted()
+        );
+    }
+
+    public static ReservationDayResponse toDayResponse(Reservation reservation) {
+        return new ReservationDayResponse(
+                reservation.getId(),
+                reservation.getCustomerName(),
+                reservation.getPickupDate(),
+                reservation.getPickupTime()
         );
     }
 }
