@@ -4,6 +4,7 @@ import com.myapp.reservation_calendar.reservation.dto.ReservationRequest;
 import com.myapp.reservation_calendar.reservation.dto.ReservationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping
-    public ReservationResponse createReservation(ReservationRequest request){
+    public ReservationResponse createReservation(@RequestBody ReservationRequest request){
         Reservation savedReservation = reservationService.createReservation(request);
         return ReservationMapper.toResponse(savedReservation);
     }
