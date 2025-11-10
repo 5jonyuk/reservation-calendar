@@ -1,8 +1,11 @@
 package com.myapp.reservation_calendar.reservation;
 
+import com.myapp.reservation_calendar.reservation.util.TimeConverter;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Component
 public class ReservationValidator {
@@ -12,7 +15,7 @@ public class ReservationValidator {
         validateMenu(reservation.getMenu());
         validateCustomerPhone(reservation.getCustomerPhone());
         if (reservation.getPickupTime() != null) {
-            validatePickupTime(reservation.getPickupTime());
+            validatePickupTimeKst(reservation.getPickupDate(), reservation.getPickupTime());
         }
         validateAmount(reservation.getAmount());
     }
@@ -38,9 +41,13 @@ public class ReservationValidator {
         }
     }
 
-    private void validatePickupTime(LocalDateTime pickupTime) {
-        if (pickupTime.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("픽업 시간은 현재 이후여야 합니다.");
+    private void validatePickupTimeKst(LocalDate pickupDate, LocalTime pickupTime) {
+        LocalDateTime pickupDateTime = LocalDateTime.of(pickupDate, pickupTime);
+
+        LocalDateTime nowKstLocal = TimeConverter.nowKst();
+
+        if (pickupDateTime.isBefore(nowKstLocal)) {
+            throw new IllegalArgumentException("예약 시간은 현재 시간 이후로 설정해야 합니다.");
         }
     }
 
@@ -48,7 +55,7 @@ public class ReservationValidator {
         if (amount == null) {
             throw new IllegalArgumentException("예약 금액은 빈 값일 수 없습니다.");
         }
-        if (amount < 0){
+        if (amount < 0) {
             throw new IllegalArgumentException("예약금액은 음수일 수 없습니다.");
         }
     }

@@ -4,7 +4,9 @@ import com.myapp.reservation_calendar.reservation.dto.ReservationRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -29,8 +31,8 @@ public class Reservation {
     @Column(nullable = false)
     private Integer amount;
 
-    private LocalDateTime pickupTime;
-    private LocalDateTime dropTime;
+    private LocalDate pickupDate;
+    private LocalTime pickupTime;
     private Boolean paymentCompleted;
     private Boolean pickupCompleted;
 
@@ -45,8 +47,8 @@ public class Reservation {
                 .customerPhone(request.customerPhone())
                 .menu(request.menu())
                 .amount(request.amount())
+                .pickupDate(request.pickupDate())
                 .pickupTime(request.pickupTime())
-                .dropTime(request.dropTime())
                 .paymentCompleted(request.paymentCompleted())
                 .pickupCompleted(request.pickupCompleted())
                 .build();
