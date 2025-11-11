@@ -2,6 +2,7 @@ package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class ReservationService {
     private final ReservationJpaRepository reservationJpaRepository;
     private final ReservationValidator reservationValidator;
+    private final JpaContext jpaContext;
 
     @Transactional
     public Reservation createReservation(ReservationCreateRequest request) {
@@ -54,5 +56,12 @@ public class ReservationService {
         reservation.updateFrom(request);
 
         return reservation;
+    }
+
+    @Transactional
+    public void deleteReservation(Long id) {
+        Reservation reservation = reservationJpaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("삭제할 id가 없습니다."));
+        reservationJpaRepository.delete(reservation);
     }
 }

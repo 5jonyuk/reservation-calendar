@@ -45,4 +45,12 @@ public class ReservationController {
         Reservation updatedReservation = reservationService.updateReservation(id, request);
         return ReservationMapper.toUpdateResponse(updatedReservation);
     }
+
+    @DeleteMapping("/{id}")
+    public ReservationDeleteResponse deleteReservation(
+            @PathVariable Long id
+    ){
+        reservationService.deleteReservation(id);
+        return ReservationMapper.toDeleteResponse(id);
+    }
 }

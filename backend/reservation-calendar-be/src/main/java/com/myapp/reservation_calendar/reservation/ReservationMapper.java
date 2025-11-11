@@ -67,4 +67,10 @@ public final class ReservationMapper {
                 reservation.getLastUpdatedAt()
         );
     }
+
+    public static ReservationDeleteResponse toDeleteResponse(Long id) {
+        return new ReservationDeleteResponse(
+                id, "해당 예약이 삭제되었습니다."
+        );
+    }
 }
