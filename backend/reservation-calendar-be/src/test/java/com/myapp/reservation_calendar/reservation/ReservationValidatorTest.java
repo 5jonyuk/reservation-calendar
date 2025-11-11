@@ -1,5 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
+import com.myapp.reservation_calendar.reservation.dto.ReservationUpdateRequest;
 import com.myapp.reservation_calendar.reservation.util.TimeConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,7 +18,7 @@ class ReservationValidatorTest {
     LocalDateTime nowKst = TimeConverter.nowKst();
 
     @Test
-    void 정상적인_예약_정보는_예외_없이_통과된다(){
+    void 정상적인_예약_정보는_예외_없이_통과된다() {
         Reservation reservation = Reservation.builder()
                 .customerName("오종혁")
                 .customerPhone("010-1234-5678")
@@ -133,7 +134,7 @@ class ReservationValidatorTest {
     }
 
     @Test
-    void 필수_값이_하나라도_누락되어있으면_예외가_발생한다(){
+    void 필수_값이_하나라도_누락되어있으면_예외가_발생한다() {
         Reservation reservation = Reservation.builder()
                 .customerName("오종혁")
                 .customerPhone("010-1234-5678")
@@ -142,5 +143,29 @@ class ReservationValidatorTest {
 
         assertThatThrownBy(() -> validator.validate(reservation))
                 .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수정한_예약날짜와_시간이_지금보다_과거이면_예외가_발생한다() {
+        ReservationUpdateRequest request = new ReservationUpdateRequest(
+                nowKst.toLocalDate().minusDays(1),
+                nowKst.toLocalTime().minusHours(1),
+                null, null, null,
+                null, null, null
+        );
+
+        assertThatThrownBy(() -> validator.validateUpdatePickupTime(request))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void 수정한_예약날짜와_시간이_지금보다_미래이면_정상작동한다(){
+        ReservationUpdateRequest request = new ReservationUpdateRequest(
+                nowKst.toLocalDate().plusDays(1),
+                nowKst.toLocalTime().plusHours(1),
+                null, null, null,
+                null, null, null
+        );
+        validator.validateUpdatePickupTime(request);
     }
 }

@@ -1,9 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
-import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
-import com.myapp.reservation_calendar.reservation.dto.ReservationDayResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationDetailResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationMonthReadResponse;
+import com.myapp.reservation_calendar.reservation.dto.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -122,11 +119,11 @@ class ReservationServiceTest {
 
         List<ReservationMonthReadResponse> result = reservationService.findByMonth(yearMonth);
 
-        assertThat(result).isEmpty() ;
+        assertThat(result).isEmpty();
     }
 
     @Test
-    void 특정날짜_예약조회_성공(){
+    void 특정날짜_예약조회_성공() {
         LocalDate date = LocalDate.of(2025, 11, 11);
 
         Reservation r = Reservation.builder()
@@ -147,7 +144,7 @@ class ReservationServiceTest {
     }
 
     @Test
-    void 특정날짜_예약없음(){
+    void 특정날짜_예약없음() {
         LocalDate date = LocalDate.of(2025, 11, 11);
 
         when(reservationJpaRepository.findByPickupDate(date)).thenReturn(List.of());
@@ -188,5 +185,76 @@ class ReservationServiceTest {
         assertThat(result.pickupDate()).isEqualTo("2025-11-10");
         assertThat(result.pickupTime()).isEqualTo("14:00:00");
         assertThat(result.amount()).isEqualTo(5000);
+    }
+
+    @Test
+    void updateReservation_존재하지_않는_id면_예외_발생() {
+        Long id = 1L;
+        ReservationUpdateRequest request = new ReservationUpdateRequest(
+                nowKst.toLocalDate().plusDays(1),
+                LocalTime.of(12, 0),
+                null, null, null,
+                null, null, null
+        );
+        when(reservationJpaRepository.findById(id)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> reservationService.updateReservation(id, request))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void updateReservation_픽업시간_검증_예외_발생() {
+        Long id = 1L;
+        Reservation reservation = Reservation.builder()
+                .id(id)
+                .pickupDate(nowKst.toLocalDate())
+                .pickupTime(nowKst.toLocalTime().plusHours(1))
+                .menu("쫀득쿠키")
+                .amount(7000)
+                .customerName("오종혁")
+                .customerPhone("010-1234-5678")
+                .build();
+        when(reservationJpaRepository.findById(id))
+                .thenReturn(Optional.of(reservation));
+
+        ReservationUpdateRequest request = new ReservationUpdateRequest(
+                nowKst.toLocalDate(),
+                nowKst.toLocalTime().minusHours(1),
+                null, null, null,
+                null, null, null
+        );
+
+        doThrow(IllegalArgumentException.class)
+                .when(reservationValidator).validateUpdatePickupTime(request);
+
+        assertThatThrownBy(() -> reservationService.updateReservation(id, request))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void updateReservation_예약_수정_성공(){
+        Long id = 1L;
+        Reservation reservation = Reservation.builder()
+                .id(id)
+                .pickupDate(nowKst.toLocalDate())
+                .pickupTime(nowKst.toLocalTime().plusHours(1))
+                .menu("쫀득쿠키")
+                .amount(7000)
+                .customerName("오종혁")
+                .customerPhone("010-1234-5678")
+                .build();
+        when(reservationJpaRepository.findById(id))
+                .thenReturn(Optional.of(reservation));
+
+        ReservationUpdateRequest request = new ReservationUpdateRequest(
+                null,null,
+                null, null, "쫀득쿠키, 에그파이",
+                12500, null, null
+        );
+
+        Reservation updatedReservation = reservationService.updateReservation(id, request);
+
+        assertThat(updatedReservation.getMenu()).isEqualTo("쫀득쿠키, 에그파이");
+        assertThat(updatedReservation.getAmount()).isEqualTo(12500);
     }
 }
