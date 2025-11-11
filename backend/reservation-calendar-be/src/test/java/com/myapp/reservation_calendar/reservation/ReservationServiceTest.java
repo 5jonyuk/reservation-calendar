@@ -257,4 +257,33 @@ class ReservationServiceTest {
         assertThat(updatedReservation.getMenu()).isEqualTo("쫀득쿠키, 에그파이");
         assertThat(updatedReservation.getAmount()).isEqualTo(12500);
     }
+
+    @Test
+    void deleteReservation_존재하지_않는_id로_삭제시_예외발생(){
+        Long invalidId = 999L;
+        when(reservationJpaRepository.findById(invalidId)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> reservationService.deleteReservation(invalidId))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
+    void deleteReservation_존재하는_id로_삭제시_정상동작(){
+        Long id = 1L;
+        Reservation r = Reservation.builder()
+                .id(id)
+                .pickupDate(nowKst.toLocalDate())
+                .pickupTime(nowKst.toLocalTime().plusHours(1))
+                .customerName("오종혁")
+                .menu("블루베리 케이크")
+                .amount(7000)
+                .customerPhone("010-1234-5678")
+                .build();
+
+        when(reservationJpaRepository.findById(id)).thenReturn(Optional.of(r));
+
+        reservationService.deleteReservation(id);
+
+        verify(reservationJpaRepository).delete(r);
+    }
 }
