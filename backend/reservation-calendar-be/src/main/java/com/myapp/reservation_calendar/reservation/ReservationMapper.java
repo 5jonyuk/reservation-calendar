@@ -1,9 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
-import com.myapp.reservation_calendar.reservation.dto.ReservationCreateResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationDayResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationDetailResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationMonthReadResponse;
+import com.myapp.reservation_calendar.reservation.dto.*;
 
 public final class ReservationMapper {
     private ReservationMapper() {
@@ -41,7 +38,9 @@ public final class ReservationMapper {
                 reservation.getMenu(),
                 reservation.getAmount(),
                 reservation.getPaymentCompleted(),
-                reservation.getPickupCompleted()
+                reservation.getPickupCompleted(),
+                reservation.getCreatedAt(),
+                reservation.getLastUpdatedAt()
         );
     }
 
@@ -51,6 +50,21 @@ public final class ReservationMapper {
                 reservation.getCustomerName(),
                 reservation.getPickupDate(),
                 reservation.getPickupTime()
+        );
+    }
+
+    public static ReservationUpdateResponse toUpdateResponse(Reservation reservation) {
+        return new ReservationUpdateResponse(
+                reservation.getId(),
+                reservation.getPickupDate(),
+                reservation.getPickupTime(),
+                reservation.getCustomerName(),
+                reservation.getCustomerPhone(),
+                reservation.getMenu(),
+                reservation.getAmount(),
+                reservation.getPaymentCompleted(),
+                reservation.getPickupCompleted(),
+                reservation.getLastUpdatedAt()
         );
     }
 }

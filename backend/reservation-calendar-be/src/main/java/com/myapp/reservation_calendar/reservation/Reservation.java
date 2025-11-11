@@ -1,6 +1,7 @@
 package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
+import com.myapp.reservation_calendar.reservation.dto.ReservationUpdateRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -52,6 +53,17 @@ public class Reservation {
                 .paymentCompleted(request.paymentCompleted())
                 .pickupCompleted(request.pickupCompleted())
                 .build();
+    }
+
+    public void updateFrom(ReservationUpdateRequest req) {
+        if (req.pickupDate() != null) this.pickupDate = req.pickupDate();
+        if (req.pickupTime() != null) this.pickupTime = req.pickupTime();
+        if (req.customerName() != null) this.customerName = req.customerName();
+        if (req.customerPhone() != null) this.customerPhone = req.customerPhone();
+        if (req.menu() != null) this.menu = req.menu();
+        if (req.amount() != null) this.amount = req.amount();
+        if (req.paymentCompleted() != null) this.paymentCompleted = req.paymentCompleted();
+        if (req.pickupCompleted() != null) this.pickupCompleted = req.pickupCompleted();
     }
 
     @PrePersist

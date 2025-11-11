@@ -37,4 +37,12 @@ public class ReservationController {
     public ReservationDetailResponse getReservationDetail(@PathVariable Long id) {
         return reservationService.getReservationDetail(id);
     }
+
+    @PatchMapping("/{id}")
+    public ReservationUpdateResponse updateReservation(
+            @PathVariable Long id,
+            @RequestBody ReservationUpdateRequest request) {
+        Reservation updatedReservation = reservationService.updateReservation(id, request);
+        return ReservationMapper.toUpdateResponse(updatedReservation);
+    }
 }

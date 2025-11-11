@@ -1,5 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
+import com.myapp.reservation_calendar.reservation.dto.ReservationUpdateRequest;
 import com.myapp.reservation_calendar.reservation.util.TimeConverter;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,12 @@ public class ReservationValidator {
             validatePickupTimeKst(reservation.getPickupDate(), reservation.getPickupTime());
         }
         validateAmount(reservation.getAmount());
+    }
+
+    public void validateUpdatePickupTime(ReservationUpdateRequest request){
+        if(request.pickupTime() != null && request.pickupDate() != null) {
+            validatePickupTimeKst(request.pickupDate(), request.pickupTime());
+        }
     }
 
     private void validateCustomerName(String customerName) {

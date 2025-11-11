@@ -1,9 +1,6 @@
 package com.myapp.reservation_calendar.reservation;
 
-import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
-import com.myapp.reservation_calendar.reservation.dto.ReservationDayResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationDetailResponse;
-import com.myapp.reservation_calendar.reservation.dto.ReservationMonthReadResponse;
+import com.myapp.reservation_calendar.reservation.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,4 +45,14 @@ public class ReservationService {
                 .toList();
     }
 
+    @Transactional
+    public Reservation updateReservation(Long id, ReservationUpdateRequest request) {
+        Reservation reservation = reservationJpaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 사용자가 없습니다."));
+
+        reservationValidator.validateUpdatePickupTime(request);
+        reservation.updateFrom(request);
+
+        return reservation;
+    }
 }
