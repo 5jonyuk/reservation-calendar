@@ -31,6 +31,7 @@ public final class ReservationMapper {
 
     public static ReservationDetailResponse toDetailResponse(Reservation reservation) {
         return new ReservationDetailResponse(
+                reservation.getId(),
                 reservation.getPickupDate(),
                 reservation.getPickupTime(),
                 reservation.getCustomerName(),

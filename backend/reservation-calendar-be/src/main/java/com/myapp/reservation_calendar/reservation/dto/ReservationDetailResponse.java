@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public record ReservationDetailResponse(
+        Long id,
         LocalDate pickupDate,
         LocalTime pickupTime,
         String customerName,

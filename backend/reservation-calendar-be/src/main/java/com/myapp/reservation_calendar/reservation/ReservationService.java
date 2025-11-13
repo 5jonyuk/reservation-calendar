@@ -52,7 +52,7 @@ public class ReservationService {
         Reservation reservation = reservationJpaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 사용자가 없습니다."));
 
-        reservationValidator.validateUpdatePickupTime(request);
+//        reservationValidator.validateUpdatePickupTime(request);
         reservation.updateFrom(request);
 
         return reservation;
