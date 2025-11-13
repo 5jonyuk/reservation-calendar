@@ -2,9 +2,9 @@ import { useState } from "react";
 
 export default function ReservationCard({
   reservation,
-  onSelect,
+  onSelectDetail,
   onEditClick,
-  onDelete,
+  onDeleteClick,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -23,7 +23,7 @@ export default function ReservationCard({
   return (
     <div
       className="bg-white rounded-lg p-6 relative hover:shadow-sm transition cursor-pointer h-auto"
-      onClick={() => onSelect(reservation.id)}
+      onClick={() => onSelectDetail(reservation.id)}
     >
       <div className="flex items-start justify-between mb-2">
         <span className="text-sm text-gray-600">{reservation.pickupDate}</span>
@@ -53,7 +53,7 @@ export default function ReservationCard({
                 className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onDelete(reservation);
+                  onDeleteClick(reservation.id);
                   setDropdownOpen(false);
                 }}
               >

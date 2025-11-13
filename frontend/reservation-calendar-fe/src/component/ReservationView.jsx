@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ReservationDetailModal from "./modal/ReservationDetailModal";
 import ReservationUpdateModal from "./modal/ReservationUpdateModal";
+import ReservationDeleteModal from "./modal/ReservationDeleteModal";
 import ReservationCard from "./ReservationCard";
 import axios from "axios";
 import apiUrl from "../config/ApiUrl";
@@ -16,29 +17,23 @@ export default function ReservationView({
   const modalModes = {
     DETAIL: "detail",
     EDIT: "edit",
+    DELETE: "delete",
     NULL: null,
   };
   const [modalMode, setModalMode] = useState(modalModes.NULL);
 
-  // const selectedDateReservations = selectedDate
-  //   ? reservations.filter((r) => {
-  //       const dateStr = `${r.pickupDate.split("-")[0]}-${String(
-  //         currentMonth + 1
-  //       ).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`;
-  //       return r.pickupDate === dateStr;
-  //     })
-  //   : [];
-
-  const handleEdit = async (reservationId, updatedReservation) => {
+  const handleSelectDetail = async (reservationId) => {
+    const isCashed =
+      selectedDetailReservation &&
+      selectedDetailReservation.id === reservationId;
     try {
-      const response = await axios.patch(
-        `${apiUrl}/api/reservation/${reservationId}`,
-        updatedReservation
-      );
-      setSelectedDetailReservation({
-        ...response.data,
-        createdAt: selectedDetailReservation.createdAt,
-      });
+      if (!isCashed) {
+        const response = await axios.get(
+          `${apiUrl}/api/reservation/${reservationId}`
+        );
+        setSelectedDetailReservation(response.data);
+      }
+      setModalMode(modalModes.DETAIL);
     } catch (error) {
       const errorMessage = `[ERROR] ${error.response.data.message}`;
       alert(errorMessage);
@@ -63,11 +58,24 @@ export default function ReservationView({
     }
   };
 
-  const handleDelete = (reservation) => {
-    console.log("삭제", reservation);
+  const handleEdit = async (reservationId, updatedReservation) => {
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/api/reservation/${reservationId}`,
+        updatedReservation
+      );
+      setSelectedDetailReservation({
+        ...response.data,
+        createdAt: selectedDetailReservation.createdAt,
+      });
+      setModalMode(modalModes.NULL);
+    } catch (error) {
+      const errorMessage = `[ERROR] ${error.response.data.message}`;
+      alert(errorMessage);
+    }
   };
 
-  const handleSelect = async (reservationId) => {
+  const handleDeleteClick = async (reservationId) => {
     const isCashed =
       selectedDetailReservation &&
       selectedDetailReservation.id === reservationId;
@@ -78,7 +86,20 @@ export default function ReservationView({
         );
         setSelectedDetailReservation(response.data);
       }
-      setModalMode(modalModes.DETAIL);
+      setModalMode(modalModes.DELETE);
+    } catch (error) {
+      const errorMessage = `[ERROR] ${error.response.data.message}`;
+      alert(errorMessage);
+    }
+  };
+
+  const handleDelete = async (reservationId) => {
+    try {
+      const response = await axios.delete(
+        `${apiUrl}/api/reservation/${reservationId}`
+      );
+      setSelectedDetailReservation(null);
+      setModalMode(modalModes.NULL);
     } catch (error) {
       const errorMessage = `[ERROR] ${error.response.data.message}`;
       alert(errorMessage);
@@ -112,31 +133,40 @@ export default function ReservationView({
             <ReservationCard
               key={reservation.id}
               reservation={reservation}
-              onSelect={handleSelect}
+              onSelectDetail={handleSelectDetail}
               onEditClick={handleEditClick}
-              onDelete={handleDelete}
+              onDeleteClick={handleDeleteClick}
             />
           ))}
         </div>
       )}
 
       {/* 상세 모달 */}
-      {modalMode === modalModes.DETAIL && (
+      {modalMode === modalModes.DETAIL && selectedDetailReservation && (
         <ReservationDetailModal
           reservation={selectedDetailReservation}
           isOpen={modalMode === modalModes.DETAIL}
           onClose={closeModal}
-          // onEdit={handleEditClick}
         />
       )}
 
       {/* 수정 모달 */}
-      {modalMode === modalModes.EDIT && (
+      {modalMode === modalModes.EDIT && selectedDetailReservation && (
         <ReservationUpdateModal
           reservation={selectedDetailReservation}
           isOpen={modalMode === modalModes.EDIT}
           onClose={closeModal}
           onEdit={handleEdit}
+        />
+      )}
+
+      {/* 삭제 모달 */}
+      {modalMode === modalModes.DELETE && selectedDetailReservation && (
+        <ReservationDeleteModal
+          reservation={selectedDetailReservation}
+          isOpen={modalMode === modalModes.DELETE}
+          onClose={closeModal}
+          onDelete={handleDelete}
         />
       )}
     </div>

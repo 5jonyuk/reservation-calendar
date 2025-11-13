@@ -1,21 +1,12 @@
 import Modal from "react-modal";
+import customStyles from "./ModalStyle";
 
-Modal.setAppElement("#root");
-
-export default function ReservationModal({ reservation, isOpen, onClose }) {
+export default function ReservationDetailModal({
+  reservation,
+  isOpen,
+  onClose,
+}) {
   if (!reservation) return null;
-
-  const customStyles = {
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.4)",
-      backdropFilter: "blur(4px)",
-      WebkitBackdropFilter: "blur(4px)", // Safari 지원
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 50,
-    },
-  };
 
   const formatDateTimeKST = (inputDateTime) => {
     const date = new Date(inputDateTime);

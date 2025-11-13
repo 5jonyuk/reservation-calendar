@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
-
-Modal.setAppElement("#root");
+import customStyles from "./ModalStyle";
 
 export default function ReservationUpdateModal({
   reservation,
@@ -35,23 +34,12 @@ export default function ReservationUpdateModal({
     onEdit(reservation.id, formData);
     setConfirmOpen(false);
     onClose();
+    alert("예약이 수정되었습니다.");
     window.location.reload();
   };
 
   const handleCancel = () => {
     setConfirmOpen(false);
-  };
-
-  const customStyles = {
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.4)",
-      backdropFilter: "blur(4px)",
-      WebkitBackdropFilter: "blur(4px)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 50,
-    },
   };
 
   if (!reservation) return null;
