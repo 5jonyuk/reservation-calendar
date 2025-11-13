@@ -27,7 +27,7 @@ export default function ReservationDeleteModal({
       isOpen={isOpen}
       onRequestClose={handleCancel}
       contentLabel="삭제 확인"
-      className="bg-white rounded-lg shadow-2xl w-80 mx-4 relative p-6"
+      className="bg-white rounded-lg shadow-2xl w-95 mx-4 relative p-6"
       style={customStyles}
     >
       <h3 className="text-lg font-semibold mb-4 text-gray-800">
@@ -36,13 +36,13 @@ export default function ReservationDeleteModal({
       <div className="flex justify-end space-x-2">
         <button
           onClick={handleCancel}
-          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 cursor-pointer"
+          className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 cursor-pointer transition"
         >
           취소
         </button>
         <button
           onClick={handleConfirm}
-          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer"
+          className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 cursor-pointer transition"
         >
           확인
         </button>
