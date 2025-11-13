@@ -14,8 +14,8 @@ export default function Home() {
   const [currentMonth, setCurrentMonth] = useState(currentMonthKST);
   const [selectedDate, setSelectedDate] = useState(null);
 
-  const [monthReservations, setMonthReservations] = useState([]); // 월별 예약
-  const [dayReservations, setDayReservations] = useState([]); // 선택된 날짜 예약
+  const [monthReservations, setMonthReservations] = useState([]);
+  const [dayReservations, setDayReservations] = useState([]);
 
   const fetchMonthReservations = async (year, month) => {
     try {
@@ -96,7 +96,7 @@ export default function Home() {
         <ReservationView
           selectedDate={selectedDate}
           currentMonth={currentMonth}
-          reservations={dayReservations}
+          selectedDateReservations={dayReservations}
         />
       </div>
     </div>

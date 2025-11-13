@@ -1,5 +1,6 @@
 import { useState } from "react";
-import ReservationModal from "./ReservationModal";
+import ReservationDetailModal from "./modal/ReservationDetailModal";
+import ReservationUpdateModal from "./modal/ReservationUpdateModal";
 import ReservationCard from "./ReservationCard";
 import axios from "axios";
 import apiUrl from "../config/ApiUrl";
@@ -7,21 +8,59 @@ import apiUrl from "../config/ApiUrl";
 export default function ReservationView({
   selectedDate,
   currentMonth,
-  reservations,
+  selectedDateReservations,
 }) {
-  const [selectedReservation, setSelectedReservation] = useState(null);
+  const [selectedDetailReservation, setSelectedDetailReservation] =
+    useState(null);
 
-  const selectedReservations = selectedDate
-    ? reservations.filter((r) => {
-        const dateStr = `${r.pickupDate.split("-")[0]}-${String(
-          currentMonth + 1
-        ).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`;
-        return r.pickupDate === dateStr;
-      })
-    : [];
+  const modalModes = {
+    DETAIL: "detail",
+    EDIT: "edit",
+    NULL: null,
+  };
+  const [modalMode, setModalMode] = useState(modalModes.NULL);
 
-  const handleEdit = (reservation) => {
-    console.log("수정", reservation);
+  // const selectedDateReservations = selectedDate
+  //   ? reservations.filter((r) => {
+  //       const dateStr = `${r.pickupDate.split("-")[0]}-${String(
+  //         currentMonth + 1
+  //       ).padStart(2, "0")}-${String(selectedDate).padStart(2, "0")}`;
+  //       return r.pickupDate === dateStr;
+  //     })
+  //   : [];
+
+  const handleEdit = async (reservationId, updatedReservation) => {
+    try {
+      const response = await axios.patch(
+        `${apiUrl}/api/reservation/${reservationId}`,
+        updatedReservation
+      );
+      setSelectedDetailReservation({
+        ...response.data,
+        createdAt: selectedDetailReservation.createdAt,
+      });
+    } catch (error) {
+      const errorMessage = `[ERROR] ${error.response.data.message}`;
+      alert(errorMessage);
+    }
+  };
+
+  const handleEditClick = async (reservationId) => {
+    const isCashed =
+      selectedDetailReservation &&
+      selectedDetailReservation.id === reservationId;
+    try {
+      if (!isCashed) {
+        const response = await axios.get(
+          `${apiUrl}/api/reservation/${reservationId}`
+        );
+        setSelectedDetailReservation(response.data);
+      }
+      setModalMode(modalModes.EDIT);
+    } catch (error) {
+      const errorMessage = `[ERROR] ${error.response.data.message}`;
+      alert(errorMessage);
+    }
   };
 
   const handleDelete = (reservation) => {
@@ -29,14 +68,25 @@ export default function ReservationView({
   };
 
   const handleSelect = async (reservationId) => {
+    const isCashed =
+      selectedDetailReservation &&
+      selectedDetailReservation.id === reservationId;
     try {
-      const response = await axios.get(
-        `${apiUrl}/api/reservation/${reservationId}`
-      );
-      setSelectedReservation(response.data);
+      if (!isCashed) {
+        const response = await axios.get(
+          `${apiUrl}/api/reservation/${reservationId}`
+        );
+        setSelectedDetailReservation(response.data);
+      }
+      setModalMode(modalModes.DETAIL);
     } catch (error) {
-      console.error("예약 상세정보 조회 실패:", error);
+      const errorMessage = `[ERROR] ${error.response.data.message}`;
+      alert(errorMessage);
     }
+  };
+
+  const closeModal = () => {
+    setModalMode(null);
   };
 
   return (
@@ -50,33 +100,45 @@ export default function ReservationView({
         </p>
       )}
 
-      {selectedDate && selectedReservations.length === 0 && (
+      {selectedDate && selectedDateReservations.length === 0 && (
         <p className="text-gray-500 text-sm text-center mt-8">
           {currentMonth + 1}월 {selectedDate}일에 예약 내역이 없습니다
         </p>
       )}
 
-      {selectedDate && selectedReservations.length > 0 && (
+      {selectedDate && selectedDateReservations.length > 0 && (
         <div className="space-y-4">
-          {selectedReservations.map((reservation) => (
+          {selectedDateReservations.map((reservation) => (
             <ReservationCard
               key={reservation.id}
               reservation={reservation}
               onSelect={handleSelect}
-              onEdit={handleEdit}
+              onEditClick={handleEditClick}
               onDelete={handleDelete}
             />
           ))}
         </div>
       )}
 
-      {/* 모달 호출 */}
-      <ReservationModal
-        reservation={selectedReservation}
-        currentMonth={currentMonth}
-        selectedDate={selectedDate}
-        onClose={() => setSelectedReservation(null)}
-      />
+      {/* 상세 모달 */}
+      {modalMode === modalModes.DETAIL && (
+        <ReservationDetailModal
+          reservation={selectedDetailReservation}
+          isOpen={modalMode === modalModes.DETAIL}
+          onClose={closeModal}
+          // onEdit={handleEditClick}
+        />
+      )}
+
+      {/* 수정 모달 */}
+      {modalMode === modalModes.EDIT && (
+        <ReservationUpdateModal
+          reservation={selectedDetailReservation}
+          isOpen={modalMode === modalModes.EDIT}
+          onClose={closeModal}
+          onEdit={handleEdit}
+        />
+      )}
     </div>
   );
 }

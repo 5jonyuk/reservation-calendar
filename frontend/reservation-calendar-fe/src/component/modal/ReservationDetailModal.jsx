@@ -2,7 +2,7 @@ import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
-export default function ReservationModal({ reservation, onClose }) {
+export default function ReservationModal({ reservation, isOpen, onClose }) {
   if (!reservation) return null;
 
   const customStyles = {
@@ -40,11 +40,11 @@ export default function ReservationModal({ reservation, onClose }) {
 
   return (
     <Modal
-      isOpen={!!reservation}
+      isOpen={isOpen}
       onRequestClose={onClose}
       contentLabel="예약 상세정보"
       style={customStyles}
-      className="bg-white rounded-xl shadow-2xl w-110 max-w-full mx-4 relative p-6 max-h-[79vh] overflow-y-auto"
+      className="bg-white rounded-xl shadow-2xl w-110 max-w-full mx-4 relative p-6 max-h-[84vh] overflow-y-auto"
     >
       {/* 닫기 버튼 */}
       <button
@@ -55,9 +55,9 @@ export default function ReservationModal({ reservation, onClose }) {
       </button>
 
       {/* 모달 제목 */}
-      <h3 className="text-2xl font-semibold mb-6 text-center text-gray-800">
+      <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
         예약 상세정보
-      </h3>
+      </h2>
 
       {/* 예약 정보 폼 */}
       <div className="space-y-4">
@@ -141,7 +141,9 @@ export default function ReservationModal({ reservation, onClose }) {
             type="text"
             value={reservation.paymentCompleted ? "완료" : "미완료"}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 ${
+              reservation.paymentCompleted ? "text-green-600" : "text-red-600"
+            }`}
           />
         </div>
 
@@ -153,7 +155,9 @@ export default function ReservationModal({ reservation, onClose }) {
             type="text"
             value={reservation.pickupCompleted ? "완료" : "미완료"}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 ${
+              reservation.pickupCompleted ? "text-green-600" : "text-red-600"
+            }`}
           />
         </div>
 
@@ -176,8 +180,8 @@ export default function ReservationModal({ reservation, onClose }) {
           <input
             type="text"
             value={
-              reservation.updatedAt
-                ? formatDateTimeKST(reservation.updatedAt)
+              reservation.lastUpdatedAt
+                ? formatDateTimeKST(reservation.lastUpdatedAt)
                 : "수정 없음"
             }
             readOnly

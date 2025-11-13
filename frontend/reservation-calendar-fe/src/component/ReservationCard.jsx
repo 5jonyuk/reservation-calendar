@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function ReservationCard({
   reservation,
   onSelect,
-  onEdit,
+  onEditClick,
   onDelete,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -40,17 +40,17 @@ export default function ReservationCard({
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
-                  onEdit(reservation);
+                  onEditClick(reservation.id);
                   setDropdownOpen(false);
                 }}
               >
                 수정
               </button>
               <button
-                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                 onClick={(e) => {
                   e.stopPropagation();
                   onDelete(reservation);
