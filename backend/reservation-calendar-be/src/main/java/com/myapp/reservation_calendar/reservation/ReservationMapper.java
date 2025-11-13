@@ -49,7 +49,8 @@ public final class ReservationMapper {
                 reservation.getId(),
                 reservation.getCustomerName(),
                 reservation.getPickupDate(),
-                reservation.getPickupTime()
+                reservation.getPickupTime(),
+                reservation.getAmount()
         );
     }
 

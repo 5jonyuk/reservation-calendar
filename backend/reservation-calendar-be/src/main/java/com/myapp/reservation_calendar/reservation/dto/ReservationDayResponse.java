@@ -7,6 +7,7 @@ public record ReservationDayResponse(
         Long id,
         String customerName,
         LocalDate pickupDate,
-        LocalTime pickupTime
+        LocalTime pickupTime,
+        Integer amount
 ) {
 }
