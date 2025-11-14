@@ -35,7 +35,7 @@ export default function ReservationDetailModal({
       onRequestClose={onClose}
       contentLabel="예약 상세정보"
       style={customStyles}
-      className="bg-white rounded-xl shadow-2xl w-110 max-w-full mx-4 relative p-6 max-h-[84vh] overflow-y-auto"
+      className="bg-white rounded-xl shadow-2xl w-110 max-w-full mx-4 relative p-6 max-h-[79vh] overflow-y-auto"
     >
       {/* 닫기 버튼 */}
       <button

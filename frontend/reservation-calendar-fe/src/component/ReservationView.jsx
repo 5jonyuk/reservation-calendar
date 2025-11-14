@@ -7,7 +7,7 @@ import axios from "axios";
 import apiUrl from "../config/ApiUrl";
 
 export default function ReservationView({
-  selectedDate,
+  selectedDay,
   currentMonth,
   selectedDateReservations,
 }) {
@@ -115,19 +115,19 @@ export default function ReservationView({
       <div className="absolute left-0 top-6 bottom-6 border-l border-gray-300" />
       <h2 className="text-xl font-bold mb-6 text-center">예약 내역</h2>
 
-      {!selectedDate && (
+      {!selectedDay && (
         <p className="text-gray-500 text-sm text-center mt-8">
           달력에서 날짜를 선택하세요
         </p>
       )}
 
-      {selectedDate && selectedDateReservations.length === 0 && (
+      {selectedDay && selectedDateReservations.length === 0 && (
         <p className="text-gray-500 text-sm text-center mt-8">
-          {currentMonth + 1}월 {selectedDate}일에 예약 내역이 없습니다
+          {currentMonth + 1}월 {selectedDay}일에 예약 내역이 없습니다
         </p>
       )}
 
-      {selectedDate && selectedDateReservations.length > 0 && (
+      {selectedDay && selectedDateReservations.length > 0 && (
         <div className="space-y-4">
           {selectedDateReservations.map((reservation) => (
             <ReservationCard
