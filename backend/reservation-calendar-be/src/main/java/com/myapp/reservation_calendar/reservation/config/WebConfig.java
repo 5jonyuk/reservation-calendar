@@ -13,7 +13,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // 모든 API 경로에 대해
-                        .allowedOrigins("http://localhost:5173", "https://reservation-calendar-8lkg683s4-ohjonghyuks-projects.vercel.app")
+                        .allowedOrigins("http://localhost:5173", "https://yuri-snack-house.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
