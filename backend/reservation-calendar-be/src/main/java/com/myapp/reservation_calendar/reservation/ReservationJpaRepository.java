@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface ReservationJpaRepository extends JpaRepository<Reservation, Long> {
     List<Reservation> findByPickupDateBetween(LocalDate startDay, LocalDate endDay);
     Optional<Reservation> findById(Long id);
-    List<Reservation> findByPickupDate(LocalDate pickupDate);
+    List<Reservation> findByPickupDateOrderByPickupTimeAsc(LocalDate pickupDate);
 }

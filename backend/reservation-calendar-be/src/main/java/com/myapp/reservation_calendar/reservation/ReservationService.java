@@ -2,7 +2,6 @@ package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,7 +14,6 @@ import java.util.List;
 public class ReservationService {
     private final ReservationJpaRepository reservationJpaRepository;
     private final ReservationValidator reservationValidator;
-    private final JpaContext jpaContext;
 
     @Transactional
     public Reservation createReservation(ReservationCreateRequest request) {
@@ -41,7 +39,7 @@ public class ReservationService {
     }
 
     public List<ReservationDayResponse> getReservationDay(LocalDate date) {
-        return reservationJpaRepository.findByPickupDate(date)
+        return reservationJpaRepository.findByPickupDateOrderByPickupTimeAsc(date)
                 .stream()
                 .map(ReservationMapper::toDayResponse)
                 .toList();
