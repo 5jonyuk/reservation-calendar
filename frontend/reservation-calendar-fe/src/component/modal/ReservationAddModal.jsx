@@ -175,14 +175,14 @@ export default function ReservationAddModal({
         <div className="flex justify-end space-x-2 mt-6">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded cursor-pointer"
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded cursor-pointer transition"
           >
             취소
           </button>
 
           <button
             onClick={handleSaveClick}
-            className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer transition"
           >
             추가
           </button>

@@ -62,7 +62,7 @@ export default function ReservationUpdateModal({
 
         <div className="space-y-3">
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            이름
+            이름 <span className="text-red-400"> *</span>
           </label>
           <input
             name="customerName"
@@ -72,7 +72,7 @@ export default function ReservationUpdateModal({
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            연락처
+            연락처 <span className="text-red-400"> *</span>
           </label>
           <input
             name="customerPhone"
@@ -82,7 +82,7 @@ export default function ReservationUpdateModal({
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            메뉴
+            메뉴 <span className="text-red-400"> *</span>
           </label>
           <input
             name="menu"
@@ -149,13 +149,13 @@ export default function ReservationUpdateModal({
         <div className="flex justify-end space-x-2">
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-300 rounded cursor-pointer"
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded cursor-pointer transition"
           >
             취소
           </button>
           <button
             onClick={handleSaveClick}
-            className="px-4 py-2 bg-blue-500 text-white rounded cursor-pointer"
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer transition"
           >
             저장
           </button>
@@ -176,13 +176,13 @@ export default function ReservationUpdateModal({
         <div className="flex justify-end space-x-2">
           <button
             onClick={handleCancel}
-            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 cursor-pointer"
+            className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded cursor-pointer"
           >
             취소
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer"
           >
             확인
           </button>
