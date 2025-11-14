@@ -11,12 +11,6 @@ export default function ReservationUpdateModal({
   const [formData, setFormData] = useState(reservation || {});
   const [confirmOpen, setConfirmOpen] = useState(false);
 
-  useEffect(() => {
-    if (reservation) {
-      setFormData(reservation);
-    }
-  }, [reservation]);
-
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -27,20 +21,29 @@ export default function ReservationUpdateModal({
   };
 
   const handleSaveClick = () => {
+    if (!formData.customerName || !formData.customerPhone || !formData.menu) {
+      alert("이름과 연락처, 메뉴는 필수 입력값입니다.");
+      return;
+    }
     setConfirmOpen(true);
   };
 
-  const handleConfirm = () => {
-    onEdit(reservation.id, formData);
+  const handleConfirm = async () => {
+    await onEdit(reservation.id, formData);
     setConfirmOpen(false);
     onClose();
-    alert("예약이 수정되었습니다.");
     window.location.reload();
   };
 
   const handleCancel = () => {
     setConfirmOpen(false);
   };
+
+  useEffect(() => {
+    if (reservation) {
+      setFormData(reservation);
+    }
+  }, [reservation]);
 
   if (!reservation) return null;
 
