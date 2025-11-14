@@ -1,11 +1,12 @@
 export default function Calendar({
   currentYear,
   currentMonth,
-  selectedDate,
+  selectedDay,
   onDateSelect,
   onPrevMonth,
   onNextMonth,
   reservations,
+  onAddClick,
 }) {
   const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -30,22 +31,33 @@ export default function Calendar({
 
   return (
     <div className="bg-white rounded-lg shadow-sm h-full p-6">
-      {/* 헤더 */}
-      <div className="flex items-center justify-center mb-6">
+      <div className="relative flex items-center justify-between mb-6">
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
+          <button
+            onClick={onPrevMonth}
+            className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
+          >
+            ◀
+          </button>
+
+          <h2 className="text-xl font-bold">
+            {currentYear}년 {currentMonth + 1}월
+          </h2>
+
+          <button
+            onClick={onNextMonth}
+            className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
+          >
+            ▶
+          </button>
+        </div>
+
         <button
-          onClick={onPrevMonth}
-          className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
+          className="ml-auto px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg shadow 
+               hover:bg-green-600 active:bg-green-700 transition cursor-pointer"
+          onClick={() => onAddClick()}
         >
-          ◀
-        </button>
-        <h2 className="text-xl font-bold">
-          {currentYear}년 {currentMonth + 1}월
-        </h2>
-        <button
-          onClick={onNextMonth}
-          className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
-        >
-          ▶
+          추가하기
         </button>
       </div>
 
@@ -79,7 +91,7 @@ export default function Calendar({
           const isSunday = dayOfWeek === 0;
           const reservationsForDay = getReservationsForDate(day);
           const hasReservations = reservationsForDay.length > 0;
-          const isSelected = selectedDate === day;
+          const isSelected = selectedDay === day;
 
           return (
             <div
