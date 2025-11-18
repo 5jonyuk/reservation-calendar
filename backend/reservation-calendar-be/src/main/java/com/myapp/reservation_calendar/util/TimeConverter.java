@@ -1,4 +1,4 @@
-package com.myapp.reservation_calendar.reservation.util;
+package com.myapp.reservation_calendar.util;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

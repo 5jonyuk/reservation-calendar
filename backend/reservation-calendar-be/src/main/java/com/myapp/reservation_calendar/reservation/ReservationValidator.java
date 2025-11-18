@@ -1,7 +1,7 @@
 package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.ReservationUpdateRequest;
-import com.myapp.reservation_calendar.reservation.util.TimeConverter;
+import com.myapp.reservation_calendar.util.TimeConverter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;

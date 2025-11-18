@@ -1,7 +1,7 @@
 package com.myapp.reservation_calendar.reservation;
 
 import com.myapp.reservation_calendar.reservation.dto.ReservationCreateRequest;
-import com.myapp.reservation_calendar.reservation.util.TimeConverter;
+import com.myapp.reservation_calendar.util.TimeConverter;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;

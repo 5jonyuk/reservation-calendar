@@ -42,12 +42,14 @@ public class SecurityConfig {
                                 .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login").permitAll()
-                        .defaultSuccessUrl("/")
+                        .loginProcessingUrl("/api/login")
+                        .successHandler((req, res, auth) -> res.setStatus(200))
+                        .failureHandler((req, res, e) -> res.sendError(401, "인증 실패"))
+                        .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true)
+                        .logoutSuccessUrl("/api/logout")
+                        .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))
                 )
                 .userDetailsService(userDetailService)
                 .build();

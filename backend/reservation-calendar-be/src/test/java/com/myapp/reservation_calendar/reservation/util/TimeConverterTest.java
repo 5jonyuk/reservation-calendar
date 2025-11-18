@@ -1,5 +1,6 @@
 package com.myapp.reservation_calendar.reservation.util;
 
+import com.myapp.reservation_calendar.util.TimeConverter;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
