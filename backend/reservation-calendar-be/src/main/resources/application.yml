@@ -18,3 +18,7 @@ spring:
         format_sql: true
 
 raw_pwd: ${RAW_PASSWORD}
+
+jwt:
+  issuer: ${ISSUER}
+  secret_key: ${SECRET_KEY}
