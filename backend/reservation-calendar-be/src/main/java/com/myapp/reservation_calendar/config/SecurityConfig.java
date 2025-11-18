@@ -1,4 +1,4 @@
-package com.myapp.reservation_calendar.reservation.config;
+package com.myapp.reservation_calendar.config;
 
 import com.myapp.reservation_calendar.user.UserDetailService;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +48,6 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/api/logout")
                         .logoutSuccessHandler((req, res, auth) -> res.setStatus(200))
                 )
                 .userDetailsService(userDetailService)
