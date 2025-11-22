@@ -1,9 +1,11 @@
 package com.myapp.reservation_calendar.config.jwt;
 
 import com.myapp.reservation_calendar.user.User;
+import com.myapp.reservation_calendar.user.UserValidator;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,9 +23,16 @@ import java.util.Set;
 @Service
 public class TokenProvider {
     private final JwtProperties jwtProperties;
-    SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
+    private final UserValidator userValidator;
+    private SecretKey key;
+
+    @PostConstruct
+    public void init() {
+        this.key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
+    }
 
     public String generateToken(User user, Duration expiredAt) {
+        userValidator.validate(user);
         Date now = new Date();
         Date expiry = new Date(now.getTime() + expiredAt.toMillis());
         return makeToken(expiry, user);
