@@ -5,7 +5,6 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
@@ -18,7 +17,6 @@ public class JwtFactory {
     private Date issuedAt = new Date();
     private Date expiration = new Date(issuedAt.getTime() + Duration.ofDays(14).toMillis());
     private Map<String, Object> claims = Collections.emptyMap();
-    SecretKey key = Keys.hmacShaKeyFor(jwtProperties.getSecretKey().getBytes(StandardCharsets.UTF_8));
 
     @Builder
     public JwtFactory(String subject, Date issuedAt, Date expiration, Map<String, Object> claims) {
@@ -39,6 +37,7 @@ public class JwtFactory {
                 .and()
 
                 .subject(subject)
+                .issuer(jwtProperties.getIssuer())
                 .issuedAt(issuedAt)
                 .expiration(expiration)
                 .claims(claims)
