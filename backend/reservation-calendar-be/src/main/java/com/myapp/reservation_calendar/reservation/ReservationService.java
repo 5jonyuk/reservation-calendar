@@ -12,6 +12,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ReservationService {
+    private static final String ERROR_MESSAGE_NO_RESERVATION = "[ERROR] 해당 예약이 없습니다.";
+    private static final String ERROR_MESSAGE_NO_USER_HAS_ID = "[ERROR] 해당 id를 가진 사용자가 없습니다.";
+    private static final String ERROR_MESSAGE_NO_ID_TO_DELETE = "[ERROR] 삭제할 id가 없습니다.";
+
+
     private final ReservationJpaRepository reservationJpaRepository;
     private final ReservationValidator reservationValidator;
 
@@ -34,7 +39,7 @@ public class ReservationService {
 
     public ReservationDetailResponse getReservationDetail(Long id) {
         Reservation reservation = reservationJpaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 예약이 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_MESSAGE_NO_RESERVATION));
         return ReservationMapper.toDetailResponse(reservation);
     }
 
@@ -48,7 +53,7 @@ public class ReservationService {
     @Transactional
     public Reservation updateReservation(Long id, ReservationUpdateRequest request) {
         Reservation reservation = reservationJpaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 사용자가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_MESSAGE_NO_USER_HAS_ID));
 
 //        reservationValidator.validateUpdatePickupTime(request);
         reservation.updateFrom(request);
@@ -59,7 +64,7 @@ public class ReservationService {
     @Transactional
     public void deleteReservation(Long id) {
         Reservation reservation = reservationJpaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("삭제할 id가 없습니다."));
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_MESSAGE_NO_ID_TO_DELETE));
         reservationJpaRepository.delete(reservation);
     }
 }

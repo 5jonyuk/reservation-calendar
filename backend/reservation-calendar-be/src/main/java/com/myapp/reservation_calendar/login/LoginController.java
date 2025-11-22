@@ -18,7 +18,7 @@ import java.time.Duration;
 @RequestMapping("/api")
 public class LoginController {
     private static final Duration ACCESS_TOKEN_EXPIRED_AT = Duration.ofMinutes(30);
-    private static final String ERROR_MESSAGE_500 = "서버 오류가 발생했습니다.";
+    private static final String ERROR_MESSAGE_500 = "[ERROR] 서버 오류가 발생했습니다.";
     private final UserService userService;
     private final TokenProvider tokenProvider;
 

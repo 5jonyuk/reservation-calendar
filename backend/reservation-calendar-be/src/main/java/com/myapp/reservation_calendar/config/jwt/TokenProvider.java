@@ -22,6 +22,13 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Service
 public class TokenProvider {
+    private static final String ERROR_MESSAGE_SIGNATURE_EXCEPTION = "[ERROR] Invalid JWT signature: ";
+    private static final String ERROR_MESSAGE_MAL_FORMED_JWT_EXCEPTION = "[ERROR] Invalid JWT token: ";
+    private static final String ERROR_MESSAGE_EXPIRED_JWT_EXCEPTION = "[ERROR] JWT token is expired: ";
+    private static final String ERROR_MESSAGE_UNSUPPORTED_JWT_EXCEPTION = "[ERROR] JWT token is unsupported: ";
+    private static final String ERROR_MESSAGE_TOKEN_EMPTY_OR_NULL = "[ERROR] JWT claims string is empty: ";
+    private static final String ERROR_MESSAGE_UNKNOWN = "[ERROR] Unknown error during token validation: ";
+
     private final JwtProperties jwtProperties;
     private final UserValidator userValidator;
     private SecretKey key;
@@ -61,7 +68,7 @@ public class TokenProvider {
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_ADMIN"));
 
         return new UsernamePasswordAuthenticationToken(
-                new org.springframework.security.core.userdetails.User(claims.getSubject(),"",authorities),
+                new org.springframework.security.core.userdetails.User(claims.getSubject(), "", authorities),
                 token,
                 authorities
         );
@@ -82,26 +89,26 @@ public class TokenProvider {
             return true;
         } catch (SignatureException e) {
             // SignatureException: 서명이 일치하지 않을 때 (토큰 위변조)
-            System.err.println("Invalid JWT signature: " + e.getMessage());
+            System.err.println(ERROR_MESSAGE_SIGNATURE_EXCEPTION + e.getMessage());
         } catch (MalformedJwtException e) {
             // MalformedJwtException: JWT 구조가 잘못되었을 때
-            System.err.println("Invalid JWT token: " + e.getMessage());
+            System.err.println(ERROR_MESSAGE_MAL_FORMED_JWT_EXCEPTION + e.getMessage());
         } catch (ExpiredJwtException e) {
             // ExpiredJwtException: 토큰이 만료되었을 때
-            System.err.println("JWT token is expired: " + e.getMessage());
+            System.err.println(ERROR_MESSAGE_EXPIRED_JWT_EXCEPTION + e.getMessage());
         } catch (UnsupportedJwtException e) {
             // UnsupportedJwtException: 지원되지 않는 JWT 형식일 때
-            System.err.println("JWT token is unsupported: " + e.getMessage());
+            System.err.println(ERROR_MESSAGE_UNSUPPORTED_JWT_EXCEPTION + e.getMessage());
         } catch (IllegalArgumentException e) {
             // IllegalArgumentException: 토큰이 null이거나 비었을 때
-            System.err.println("JWT claims string is empty: " + e.getMessage());
+            System.err.println(ERROR_MESSAGE_TOKEN_EMPTY_OR_NULL + e.getMessage());
         } catch (Exception e) {
-            System.err.println("Unknown error during token validation: " + e.getMessage());
+            System.err.println(ERROR_MESSAGE_UNKNOWN + e.getMessage());
         }
         return false;
     }
 
-    private Claims getClaims(String token){
+    private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(key)
                 .build()

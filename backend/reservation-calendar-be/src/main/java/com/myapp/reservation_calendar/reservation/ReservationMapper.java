@@ -3,6 +3,7 @@ package com.myapp.reservation_calendar.reservation;
 import com.myapp.reservation_calendar.reservation.dto.*;
 
 public final class ReservationMapper {
+    private static final String MESSAGE_DELETE_RESERVATION = "[MESSAGE] 해당 예약이 삭제되었습니다.";
     private ReservationMapper() {
     }
 
@@ -72,7 +73,7 @@ public final class ReservationMapper {
 
     public static ReservationDeleteResponse toDeleteResponse(Long id) {
         return new ReservationDeleteResponse(
-                id, "해당 예약이 삭제되었습니다."
+                id, MESSAGE_DELETE_RESERVATION
         );
     }
 }
