@@ -94,6 +94,7 @@ export default function ReservationAddModal({
           </label>
           <input
             name="customerPhone"
+            placeholder="010-1234-1234"
             value={formData.customerPhone}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
