@@ -18,11 +18,14 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RefreshTokenServiceTest {
-    private static final String ERR_MESSAGE_INVALID_TOKEN = "유효하지 않거나 만료된 Refresh Token 입니다.";
+    private static final String ERR_MESSAGE_INVALID_TOKEN = "유효하지 않거나 만료된 토큰 입니다.";
     private static final String ERR_MESSAGE_NOT_REFRESH_TOKEN_IN_DB = "DB에 저장되어 있지 않은 Refresh Token 입니다.";
+    private static final String ERR_MESSAGE_ALREADY_LOGOUT = "이미 로그아웃 처리되었거나 존재하지 않는 토큰입니다.";
+
     private final Long userId = 1L;
     private final String new_refreshToken = "new_refreshToken";
     private final String old_refreshToken = "old_refreshToken";
+
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
     @Mock
@@ -91,14 +94,52 @@ class RefreshTokenServiceTest {
     }
 
     @Test
-    void reIssueAccessToken_DB에_리프레시_토큰이_없을경우_예외가_발생한다(){
+    void reIssueAccessToken_DB에_리프레시_토큰이_없을경우_예외가_발생한다() {
         when(tokenProvider.validateToken(old_refreshToken)).thenReturn(true);
         when(refreshTokenRepository.findByRefreshToken(old_refreshToken)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(()->refreshTokenService.reIssueAccessToken(old_refreshToken))
+        assertThatThrownBy(() -> refreshTokenService.reIssueAccessToken(old_refreshToken))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage(ERR_MESSAGE_NOT_REFRESH_TOKEN_IN_DB);
         verify(tokenProvider, times(1)).validateToken(old_refreshToken);
         verify(userDetailService, never()).loadUserByUserId(userId);
+    }
+
+    @Test
+    void deleteRefreshToken_유효한_리프레시_토큰이면_DB에_리프레시_토큰을_삭제하며_로그아웃에_성공한다() {
+        RefreshToken oldRefreshToken = RefreshToken.of(userId, old_refreshToken);
+        when(tokenProvider.validateToken(old_refreshToken)).thenReturn(true);
+        when(refreshTokenRepository.findByRefreshToken(old_refreshToken)).thenReturn(Optional.of(oldRefreshToken));
+
+        refreshTokenService.deleteRefreshToken(old_refreshToken);
+
+        verify(tokenProvider, times(1)).validateToken(old_refreshToken);
+        verify(refreshTokenRepository, times(1)).findByRefreshToken(old_refreshToken);
+        verify(refreshTokenRepository, times(1)).delete(oldRefreshToken);
+    }
+
+    @Test
+    void deleteRefreshToken_만료된_리프레시_토큰이면_DB에_리프레시_토큰을_삭제하며_로그아웃에_실패한다() {
+        when(tokenProvider.validateToken(old_refreshToken)).thenReturn(false);
+
+        assertThatThrownBy(() -> refreshTokenService.deleteRefreshToken(old_refreshToken))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ERR_MESSAGE_INVALID_TOKEN);
+        verify(tokenProvider, times(1)).validateToken(old_refreshToken);
+        verify(refreshTokenRepository, never()).findByRefreshToken(old_refreshToken);
+    }
+
+    @Test
+    void deleteRefreshToken_DB에_리프레시_토큰이_없다면_로그아웃에_실패한다(){
+        when(tokenProvider.validateToken(old_refreshToken)).thenReturn(true);
+        when(refreshTokenRepository.findByRefreshToken(old_refreshToken)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> refreshTokenService.deleteRefreshToken(old_refreshToken))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ERR_MESSAGE_ALREADY_LOGOUT);
+
+        verify(tokenProvider, times(1)).validateToken(old_refreshToken);
+        verify(refreshTokenRepository, times(1)).findByRefreshToken(old_refreshToken);
+        verify(refreshTokenRepository, never()).delete(any(RefreshToken.class));
     }
 }
