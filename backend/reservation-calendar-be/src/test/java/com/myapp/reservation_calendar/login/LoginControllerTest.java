@@ -1,7 +1,7 @@
 package com.myapp.reservation_calendar.login;
 
 import com.myapp.reservation_calendar.config.jwt.TokenProvider;
-import com.myapp.reservation_calendar.login.dto.LoginRequestDTO;
+import com.myapp.reservation_calendar.login.dto.LoginRequest;
 import com.myapp.reservation_calendar.user.User;
 import com.myapp.reservation_calendar.user.UserService;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class LoginControllerTest {
 
     @Test
     void login_유효한_사용자가_토큰을_발급_성공시_200과_토큰_본문을_반환한다(){
-        LoginRequestDTO loginRequest = new LoginRequestDTO(mockUsername, mockPassword);
+        LoginRequest loginRequest = new LoginRequest(mockUsername, mockPassword);
         mockUser = User.builder()
                 .username(mockUsername)
                 .password(mockPassword)
@@ -46,7 +46,7 @@ class LoginControllerTest {
         when(userService.authenticate(mockUsername, mockPassword)).thenReturn(mockUser);
         when(tokenProvider.generateToken(mockUser, ACCESS_TOKEN_EXPIRED_AT)).thenReturn(mockToken);
 
-        ResponseEntity<String> response = loginController.login(loginRequest);
+        ResponseEntity<?> response = loginController.login(loginRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(mockToken);
@@ -56,7 +56,7 @@ class LoginControllerTest {
 
     @Test
     void login_로그인_정보가_불일치하면_401_에러코드와_예외가_발생한다(){
-        LoginRequestDTO loginRequest = new LoginRequestDTO(mockUsername, mockPassword);
+        LoginRequest loginRequest = new LoginRequest(mockUsername, mockPassword);
         mockUser = User.builder()
                 .username(mockUsername)
                 .password(mockPassword)
@@ -64,7 +64,7 @@ class LoginControllerTest {
         when(userService.authenticate(mockUsername, mockPassword))
                 .thenThrow(new IllegalArgumentException(errorMessage_401));
 
-        ResponseEntity<String> response = loginController.login(loginRequest);
+        ResponseEntity<?> response = loginController.login(loginRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
         assertThat(response.getBody()).isEqualTo(errorMessage_500);
@@ -74,7 +74,7 @@ class LoginControllerTest {
 
     @Test
     void login_예기치_못한_서버오류가_발생하면_500코드와_예외가_발생한다(){
-        LoginRequestDTO loginRequest = new LoginRequestDTO(mockUsername, mockPassword);
+        LoginRequest loginRequest = new LoginRequest(mockUsername, mockPassword);
         mockUser = User.builder()
                 .username(mockUsername)
                 .password(mockPassword)
@@ -83,7 +83,7 @@ class LoginControllerTest {
         when(userService.authenticate(mockUsername, mockPassword))
                 .thenThrow(new RuntimeException(errorMessage_500));
 
-        ResponseEntity<String> response = loginController.login(loginRequest);
+        ResponseEntity<?> response = loginController.login(loginRequest);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).isEqualTo(errorMessage_500);
