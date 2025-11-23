@@ -37,7 +37,7 @@ public class LoginController {
             refreshTokenService.saveOrUpdate(user.getId(), refreshToken);
 
             LoginResponse responseDTO = new LoginResponse(accessToken, refreshToken);
-            return ResponseEntity.ok(ApiResponse.success(responseDTO));
+            return ResponseEntity.ok(ApiResponse.success(responseDTO, null));
 
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body(ApiResponse.error(e.getMessage()));

@@ -23,11 +23,13 @@ public class RefreshTokenController {
             String newAccessToken = refreshTokenService.reIssueAccessToken(request.refreshToken());
             CreateAccessTokenResponse response = new CreateAccessTokenResponse(newAccessToken);
 
-            return ResponseEntity.ok(ApiResponse.success(response));
+            return ResponseEntity.ok(ApiResponse.success(response, null));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(401).body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.status(500).body(ApiResponse.error(ERR_MESSAGE_SERVER_ERR));
         }
     }
+
+
 }
