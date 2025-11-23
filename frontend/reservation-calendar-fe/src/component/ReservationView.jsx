@@ -1,4 +1,5 @@
 import ReservationCard from "./ReservationCard";
+import Icon from "./Icon";
 
 export default function ReservationView({
   selectedDay,
@@ -7,11 +8,32 @@ export default function ReservationView({
   onSelectDetail,
   onEditClick,
   onDeleteClick,
+  onLogout,
 }) {
+  const LogoutIcon = (props) => (
+    <Icon {...props}>
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </Icon>
+  );
   return (
     <div className="relative bg-gray-50 p-6 overflow-auto h-screen">
       <div className="absolute left-0 top-6 bottom-6 border-l border-gray-300" />
-      <h2 className="text-xl font-bold mb-6 text-center">예약 내역</h2>
+
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex-1" />
+        <h2 className="text-xl font-bold text-center flex-1">예약 내역</h2>
+        <div className="flex-1 flex justify-end">
+          <button
+            onClick={onLogout}
+            className="p-2 hover:bg-gray-200 rounded-lg transition cursor-pointer"
+            title="로그아웃"
+          >
+            <LogoutIcon className="w-6 h-6 text-gray-400" />
+          </button>
+        </div>
+      </div>
 
       {!selectedDay && (
         <p className="text-gray-500 text-sm text-center mt-8">

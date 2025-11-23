@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Calendar from "../component/Calendar";
 import ReservationView from "../component/ReservationView";
 import apiUrl from "../config/ApiUrl";
@@ -8,7 +9,7 @@ import ReservationDetailModal from "../component/modal/ReservationDetailModal";
 import ReservationUpdateModal from "../component/modal/ReservationUpdateModal";
 import ReservationDeleteModal from "../component/modal/ReservationDeleteModal";
 
-export default function Home() {
+export default function Home({ onLogout }) {
   const now = new Date();
   const KST = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Seoul" }));
   const currentYearKST = KST.getFullYear();
@@ -31,6 +32,7 @@ export default function Home() {
     NULL: null,
   };
   const [modalMode, setModalMode] = useState(modalModes.NULL);
+  const navigate = useNavigate();
 
   const fetchMonthReservations = async (year, month) => {
     try {
@@ -178,6 +180,11 @@ export default function Home() {
     setModalMode(null);
   };
 
+  const handleLogout = async () => {
+    await onLogout();
+    navigate("/login");
+  };
+
   useEffect(() => {
     fetchMonthReservations(currentYear, currentMonth);
     if (currentYear === currentYearKST && currentMonth === currentMonthKST) {
@@ -226,6 +233,7 @@ export default function Home() {
           onSelectDetail={handleSelectDetail}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
+          onLogout={handleLogout}
         />
       </div>
 
