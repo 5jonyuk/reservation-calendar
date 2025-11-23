@@ -14,6 +14,5 @@ public class PasswordGenerator implements CommandLineRunner {
     public void run(String... args) throws Exception {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encoded = encoder.encode(rawPassword);
-        System.out.println("Encoded password: " + encoded);
     }
 }
