@@ -2,7 +2,6 @@ package com.myapp.reservation_calendar.config.jwt;
 
 import com.myapp.reservation_calendar.user.User;
 import com.myapp.reservation_calendar.user.UserValidator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,16 +21,13 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TokenProviderTest {
+    private static final String mockSecretKey = "asdfgqwer123rasdfasdrqwerqdfasdf!";
     @Mock
     private JwtProperties jwtProperties;
-
     @Mock
     private UserValidator userValidator;
-
     @InjectMocks
     private TokenProvider tokenProvider;
-
-    private static final String mockSecretKey = "asdfgqwer123rasdfasdrqwerqdfasdf!";
 
     @Test
     void generateToken_유저가_null_일_때_예외가_발생한다() {
@@ -42,7 +38,6 @@ class TokenProviderTest {
         doThrow(new IllegalArgumentException("유저 정보가 존재하지 않습니다."))
                 .when(userValidator).validate(user);
 
-        // TokenProvider.generateToken 호출 시 userValidator.validate(user)에서 예외 발생
         assertThatThrownBy(() -> tokenProvider.generateToken(user, expiry))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("유저 정보가 존재하지 않습니다.");
@@ -64,6 +59,42 @@ class TokenProviderTest {
 
         assertThat(token).isNotNull();
         assertThat(tokenProvider.getUserId(token)).isEqualTo(1L);
+    }
+
+    @Test
+    void generateRefreshToken_유저가_null_일_때_예외가_발생한다() {
+        User user = null;
+        doThrow(new IllegalArgumentException("유저 정보가 존재하지 않습니다."))
+                .when(userValidator).validate(user);
+
+        assertThatThrownBy(() -> tokenProvider.generateRefreshToken(user))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("유저 정보가 존재하지 않습니다.");
+
+        verify(userValidator).validate(user);
+    }
+
+    @Test
+    void generateRefreshToken_유저_정보를_전달해_리프레시_토큰을_만들_수_있다() {
+        User user = User.builder()
+                .username("testUser")
+                .password("testPassword")
+                .build();
+
+        doNothing().when(userValidator).validate(user);
+        when(jwtProperties.getRefreshTokenExpiration()).thenReturn(Duration.ofDays(14));
+        when(jwtProperties.getSecretKey()).thenReturn(mockSecretKey);
+        when(jwtProperties.getIssuer()).thenReturn("ohjonghyuk");
+        tokenProvider.init();
+
+        String token = tokenProvider.generateRefreshToken(user);
+
+        assertThat(token).isNotNull();
+        assertThat(tokenProvider.getAuthentication(token).getName()).isEqualTo("testUser");
+        verify(jwtProperties, times(1)).getRefreshTokenExpiration();
+        verify(jwtProperties, times(1)).getIssuer();
+        verify(jwtProperties, times(1)).getSecretKey();
+        verify(userValidator, times(1)).validate(user);
     }
 
     @Test
