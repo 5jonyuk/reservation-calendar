@@ -15,4 +15,9 @@ public class UserDetailService implements UserDetailsService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException(ERROR_MESSAGE_NULL_USER));
     }
+
+    public User loadUserByUserId(Long userId){
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_MESSAGE_NULL_USER));
+    }
 }
