@@ -23,6 +23,10 @@ export default function ReservationDetailModal({
   };
 
   const formatTime = (inputTime) => {
+    if (!inputTime || typeof inputTime !== "string") {
+      // 예를 들어, 로딩 중이거나 값이 없을 때 '시간 정보 없음'을 반환
+      return "시간 정보 없음";
+    }
     const [hours, minutes] = inputTime.split(":");
     const formattedHours = String(hours).padStart(2, "0");
     const formattedMinutes = String(minutes).padStart(2, "0");

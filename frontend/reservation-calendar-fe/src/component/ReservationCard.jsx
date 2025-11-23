@@ -14,6 +14,10 @@ export default function ReservationCard({
   };
 
   const formatTime = (inputTime) => {
+    if (!inputTime || typeof inputTime !== "string") {
+      return "시간 정보 없음";
+    }
+
     const [hours, minutes] = inputTime.split(":");
     const formattedHours = String(hours).padStart(2, "0");
     const formattedMinutes = String(minutes).padStart(2, "0");
