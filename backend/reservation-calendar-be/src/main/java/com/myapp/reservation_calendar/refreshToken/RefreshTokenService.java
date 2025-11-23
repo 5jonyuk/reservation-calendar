@@ -13,8 +13,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class RefreshTokenService {
-    private static final String ERR_MESSAGE_INVALID_TOKEN = "유효하지 않거나 만료된 Refresh Token 입니다.";
+    private static final String ERR_MESSAGE_INVALID_TOKEN = "유효하지 않거나 만료된 토큰 입니다.";
     private static final String ERR_MESSAGE_NOT_REFRESH_TOKEN_IN_DB = "DB에 저장되어 있지 않은 Refresh Token 입니다.";
+    private static final String ERR_MESSAGE_ALREADY_LOGOUT = "이미 로그아웃 처리되었거나 존재하지 않는 토큰입니다.";
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenProvider tokenProvider;
@@ -46,5 +47,17 @@ public class RefreshTokenService {
         User user = userDetailService.loadUserByUserId(userId);
 
         return tokenProvider.generateToken(user, jwtProperties.getAccessTokenExpiration());
+    }
+
+    @Transactional
+    public void deleteRefreshToken(String refreshToken) {
+        if (!tokenProvider.validateToken(refreshToken)) {
+            throw new IllegalArgumentException(ERR_MESSAGE_INVALID_TOKEN);
+        }
+
+        RefreshToken storedToken = refreshTokenRepository.findByRefreshToken(refreshToken)
+                .orElseThrow(() -> new IllegalArgumentException(ERR_MESSAGE_ALREADY_LOGOUT));
+
+        refreshTokenRepository.delete(storedToken);
     }
 }
