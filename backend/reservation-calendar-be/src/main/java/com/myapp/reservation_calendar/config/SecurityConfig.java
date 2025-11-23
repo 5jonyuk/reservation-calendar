@@ -72,7 +72,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         var c = new CorsConfiguration();
         c.setAllowedOrigins(List.of("http://localhost:5173", "https://yuri-snack-house.vercel.app"));
-        c.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        c.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         c.setAllowedHeaders(List.of("Authorization", "Content-Type", "Accept"));
         c.setAllowCredentials(true);
         var s = new UrlBasedCorsConfigurationSource();
