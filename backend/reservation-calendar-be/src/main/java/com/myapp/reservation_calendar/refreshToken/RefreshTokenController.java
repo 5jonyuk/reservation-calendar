@@ -1,5 +1,6 @@
 package com.myapp.reservation_calendar.refreshToken;
 
+import com.myapp.reservation_calendar.ApiResponse;
 import com.myapp.reservation_calendar.refreshToken.dto.CreateAccessTokenRequest;
 import com.myapp.reservation_calendar.refreshToken.dto.CreateAccessTokenResponse;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +18,16 @@ public class RefreshTokenController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissueAccessToken(@RequestBody CreateAccessTokenRequest request) {
+    public ResponseEntity<ApiResponse<?>> reissueAccessToken(@RequestBody CreateAccessTokenRequest request) {
         try {
             String newAccessToken = refreshTokenService.reIssueAccessToken(request.refreshToken());
+            CreateAccessTokenResponse response = new CreateAccessTokenResponse(newAccessToken);
 
-            return ResponseEntity.ok(new CreateAccessTokenResponse(newAccessToken));
+            return ResponseEntity.ok(ApiResponse.success(response));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(401).body(e.getMessage());
+            return ResponseEntity.status(401).body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(ERR_MESSAGE_SERVER_ERR);
+            return ResponseEntity.status(500).body(ApiResponse.error(ERR_MESSAGE_SERVER_ERR));
         }
     }
 }

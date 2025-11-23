@@ -1,9 +1,9 @@
 package com.myapp.reservation_calendar.login;
 
+import com.myapp.reservation_calendar.ApiResponse;
 import com.myapp.reservation_calendar.config.jwt.TokenProvider;
 import com.myapp.reservation_calendar.login.dto.LoginRequest;
 import com.myapp.reservation_calendar.login.dto.LoginResponse;
-import com.myapp.reservation_calendar.refreshToken.RefreshToken;
 import com.myapp.reservation_calendar.refreshToken.RefreshTokenService;
 import com.myapp.reservation_calendar.user.User;
 import com.myapp.reservation_calendar.user.UserService;
@@ -28,7 +28,7 @@ public class LoginController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<ApiResponse<?>> login(@RequestBody LoginRequest loginRequest) {
         try {
             User user = userService.authenticate(loginRequest.username(), loginRequest.password());
             String accessToken = tokenProvider.generateToken(user, ACCESS_TOKEN_EXPIRED_AT);
@@ -37,12 +37,12 @@ public class LoginController {
             refreshTokenService.saveOrUpdate(user.getId(), refreshToken);
 
             LoginResponse responseDTO = new LoginResponse(accessToken, refreshToken);
-            return ResponseEntity.ok(responseDTO);
+            return ResponseEntity.ok(ApiResponse.success(responseDTO));
 
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.status(401).body(e.getMessage());
+            return ResponseEntity.status(401).body(ApiResponse.error(e.getMessage()));
         } catch (Exception e) {
-            return ResponseEntity.status(500).body(ERROR_MESSAGE_500);
+            return ResponseEntity.status(500).body(ApiResponse.error(ERROR_MESSAGE_500));
         }
     }
 }
