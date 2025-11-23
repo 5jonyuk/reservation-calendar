@@ -45,6 +45,13 @@ public class TokenProvider {
         return makeToken(expiry, user);
     }
 
+    public String generateRefreshToken(User user) {
+        userValidator.validate(user);
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + jwtProperties.getRefreshTokenExpiration().toMillis());
+        return makeToken(expiry, user);
+    }
+
     private String makeToken(Date expiry, User user) {
         Date now = new Date();
 
