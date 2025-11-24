@@ -28,11 +28,18 @@ public class ReservationValidator {
         validateAmount(reservation.getAmount());
     }
 
-    public void validateUpdatePickupTime(ReservationUpdateRequest request) {
-        if (request.pickupTime() != null && request.pickupDate() != null) {
-            validatePickupTimeKst(request.pickupDate(), request.pickupTime());
-        }
+    public void updateValidate(ReservationUpdateRequest request) {
+        validateCustomerName(request.customerName());
+        validateMenu(request.menu());
+        validateCustomerPhone(request.customerPhone());
+        validateAmount(request.amount());
     }
+
+//    public void validateUpdatePickupTime(ReservationUpdateRequest request) {
+//        if (request.pickupTime() != null && request.pickupDate() != null) {
+//            validatePickupTimeKst(request.pickupDate(), request.pickupTime());
+//        }
+//    }
 
     private void validateCustomerName(String customerName) {
         if (customerName == null || customerName.isBlank()) {
