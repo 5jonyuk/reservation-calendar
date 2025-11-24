@@ -29,10 +29,15 @@ export default function ReservationUpdateModal({
   };
 
   const handleConfirm = async () => {
-    await onEdit(reservation.id, formData);
-    setConfirmOpen(false);
-    onClose();
-    window.location.reload();
+    try {
+      await onEdit(reservation.id, formData);
+      setConfirmOpen(false);
+      onClose();
+      window.location.reload();
+    } catch (e) {
+      console.log(e);
+      setConfirmOpen(false);
+    }
   };
 
   const handleCancel = () => {
@@ -65,6 +70,7 @@ export default function ReservationUpdateModal({
             이름 <span className="text-red-400"> *</span>
           </label>
           <input
+            required
             name="customerName"
             value={formData.customerName || ""}
             onChange={handleChange}
@@ -75,6 +81,7 @@ export default function ReservationUpdateModal({
             연락처 <span className="text-red-400"> *</span>
           </label>
           <input
+            required
             name="customerPhone"
             placeholder="010-1234-1234"
             value={formData.customerPhone || ""}
@@ -86,6 +93,7 @@ export default function ReservationUpdateModal({
             메뉴 <span className="text-red-400"> *</span>
           </label>
           <input
+            required
             name="menu"
             value={formData.menu || ""}
             onChange={handleChange}
@@ -93,11 +101,12 @@ export default function ReservationUpdateModal({
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            예약금액
+            예약금액 <span className="text-red-400"> *</span>
           </label>
           <input
             name="amount"
             type="number"
+            required
             value={formData.amount || ""}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"

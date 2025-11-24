@@ -43,11 +43,7 @@ export default function Home({ onLogout }) {
       setMonthReservations(response.data);
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      console.error(errorMessage);
     }
   };
 
@@ -59,11 +55,7 @@ export default function Home({ onLogout }) {
       setDayReservations(response.data);
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      console.error(errorMessage);
     }
   };
 
@@ -105,11 +97,7 @@ export default function Home({ onLogout }) {
       setModalMode(modalModes.EDIT);
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      alert(errorMessage);
     }
   };
 
@@ -126,11 +114,7 @@ export default function Home({ onLogout }) {
       setModalMode(modalModes.DELETE);
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      alert(errorMessage);
     }
   };
 
@@ -147,11 +131,7 @@ export default function Home({ onLogout }) {
       setModalMode(modalModes.DETAIL);
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      alert(errorMessage);
     }
   };
 
@@ -164,11 +144,8 @@ export default function Home({ onLogout }) {
       alert("예약이 추가되었습니다.");
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      alert(errorMessage);
+      throw error;
     }
   };
 
@@ -185,11 +162,8 @@ export default function Home({ onLogout }) {
       alert("예약이 수정되었습니다.");
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      alert(errorMessage);
+      throw error;
     }
   };
 
@@ -202,11 +176,8 @@ export default function Home({ onLogout }) {
       setModalMode(modalModes.NULL);
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
-      if (errorMessage === undefined) {
-        alert("서버가 아직 시작되지 않았습니다. 잠시 후에 다시 시도해 주세요.");
-      } else {
-        alert("[ERROR] ", errorMessage);
-      }
+      alert(errorMessage);
+      throw error;
     }
   };
 
