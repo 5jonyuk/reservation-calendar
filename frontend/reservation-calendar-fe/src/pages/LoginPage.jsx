@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import apiUrl from "../config/ApiUrl";
 import logo from "../img/logo.png";
 import Icon from "../component/Icon";
+import axios from "axios";
 
 const UserIcon = (props) => (
   <Icon {...props}>
@@ -33,8 +34,6 @@ export default function LoginPage({ onLoginSuccess }) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const LOGIN_ENDPOINT = `${apiUrl}/api/login`;
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
@@ -47,37 +46,28 @@ export default function LoginPage({ onLoginSuccess }) {
     }
 
     try {
-      const response = await fetch(LOGIN_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
+      const response = await axios.post(`${apiUrl}/api/login`, {
+        username,
+        password,
       });
 
-      const apiResponse = await response.json();
+      const apiResponse = await response.data;
 
-      if (response.ok) {
-        const accessToken = apiResponse.data?.accessToken;
-        const refreshToken = apiResponse.data?.refreshToken;
+      const accessToken = apiResponse.data?.accessToken;
+      const refreshToken = apiResponse.data?.refreshToken;
 
-        if (accessToken && refreshToken) {
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
-          onLoginSuccess();
-        } else {
-          setError("로그인 성공했으나, 토큰 데이터를 받지 못했습니다.");
-        }
+      if (accessToken && refreshToken) {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        onLoginSuccess();
       } else {
-        setError(
-          apiResponse.message ||
-            "로그인에 실패했습니다. 서버 메시지를 확인해주세요."
-        );
+        setError("로그인 성공했으나, 토큰 데이터를 받지 못했습니다.");
       }
     } catch (err) {
-      console.error("API 통신 오류:", err);
+      const errorMessage = err.response?.data?.message;
       setError(
-        "서버와 통신하는 중 오류가 발생했습니다. (네트워크/파싱 오류일 수 있음)"
+        errorMessage ||
+          "서버와 통신하는 중 오류가 발생했습니다. (네트워크/파싱 오류일 수 있음)"
       );
     } finally {
       setIsLoading(false);
