@@ -46,7 +46,7 @@ public class SecurityConfig {
                         auth -> auth
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers(("/api/token/**")).permitAll()
-                                .requestMatchers("/api/login").permitAll()
+                                .requestMatchers("/api/login", "/api/health").permitAll()
                                 .anyRequest().authenticated()
                 )
                 // JWT를 사용하기 위해 세션 기반 인증 비활성화
