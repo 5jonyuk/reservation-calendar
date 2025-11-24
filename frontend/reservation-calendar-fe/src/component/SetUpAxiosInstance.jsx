@@ -29,10 +29,16 @@ export default function SetUpAxiosInstance() {
   axios.interceptors.response.use(
     (response) => response,
     (error) => {
-      if (error.response?.status === 401) {
+      const status = error.response?.status;
+      if (status === 401 || status === 403) {
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        window.location.href = "/login";
+
+        alert("로그인이 만료되어 로그인 화면으로 이동합니다.");
+
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 0);
       }
       return Promise.reject(error);
     }
