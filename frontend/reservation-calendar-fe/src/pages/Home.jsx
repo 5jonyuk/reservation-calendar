@@ -8,6 +8,7 @@ import ReservationAddModal from "../component/modal/ReservationAddModal";
 import ReservationDetailModal from "../component/modal/ReservationDetailModal";
 import ReservationUpdateModal from "../component/modal/ReservationUpdateModal";
 import ReservationDeleteModal from "../component/modal/ReservationDeleteModal";
+import Spinner from "../component/Spinner";
 
 export default function Home({ onLogout }) {
   const now = new Date();
@@ -32,6 +33,9 @@ export default function Home({ onLogout }) {
     NULL: null,
   };
   const [modalMode, setModalMode] = useState(modalModes.NULL);
+  const [isServerReady, setIsServerReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
   const navigate = useNavigate();
 
   const fetchMonthReservations = async (year, month) => {
@@ -190,6 +194,17 @@ export default function Home({ onLogout }) {
     navigate("/login");
   };
 
+  const checkServerHealth = async () => {
+    try {
+      await axios.get(`${apiUrl}/api/health`);
+
+      setIsServerReady(true);
+      setIsLoading(false);
+    } catch (error) {
+      console.log("Server still cold start...");
+    }
+  };
+
   useEffect(() => {
     fetchMonthReservations(currentYear, currentMonth);
     setDayReservations([]);
@@ -212,6 +227,32 @@ export default function Home({ onLogout }) {
       fetchDayReservations(seletedDateFormatted);
     }
   }, [currentYear, currentMonth, selectedDay]);
+
+  useEffect(() => {
+    if (isServerReady) {
+      setIsLoading(false);
+      return;
+    }
+    checkServerHealth();
+
+    // 5초 간격으로 헬스체크 반복
+    const intervalId = setInterval(checkServerHealth, 5000);
+
+    return () => clearInterval(intervalId);
+  }, [isServerReady]);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col justify-center items-center h-screen bg-gray-100">
+        <p className="mt-2 text-xl text-gray-700">
+          🧊 서버를 깨우는 중입니다... 잠시만 기다려 주세요. 🧊
+        </p>
+        <div>
+          <Spinner className="mt-3" size="lg" color="text-black-500" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex h-screen bg-gray-50">
