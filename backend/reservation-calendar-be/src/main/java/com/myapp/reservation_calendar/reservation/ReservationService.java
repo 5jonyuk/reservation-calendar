@@ -55,7 +55,7 @@ public class ReservationService {
         Reservation reservation = reservationJpaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(ERROR_MESSAGE_NO_USER_HAS_ID));
 
-//        reservationValidator.validateUpdatePickupTime(request);
+        reservationValidator.updateValidate(request);
         reservation.updateFrom(request);
 
         return reservation;
