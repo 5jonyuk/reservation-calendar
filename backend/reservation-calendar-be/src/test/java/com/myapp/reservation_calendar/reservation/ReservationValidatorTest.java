@@ -14,6 +14,14 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class ReservationValidatorTest {
+    private static final String ERROR_MESSAGE_RESERVATION_PERSON_NAME_ESSENTIAL = "[ERROR] 예약자 이름은 필수 입력입니다.";
+    private static final String ERROR_MESSAGE_MENU_ESSENTIAL = "[ERROR] 메뉴 이름은 필수 입력입니다.";
+    private static final String ERROR_MESSAGE_RESERVATION_PERSON_PHONE_ESSENTIAL = "[ERROR] 예약자 번호는 필수 입력입니다.";
+    private static final String ERROR_MESSAGE_INVALID_PHONE_REGEX = "[ERROR] 연락처 형식이 올바르지 않습니다. 예) 010-1234-5678";
+    private static final String ERROR_MESSAGE_RESERVATION_TIME = "[ERROR] 예약 시간은 현재 시간 이후로 설정해야 합니다.";
+    private static final String ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NULL = "[ERROR] 예약 금액은 빈 값일 수 없습니다.";
+    private static final String ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NEGATIVE = "[ERROR] 예약금액은 음수일 수 없습니다.";
+
     ReservationValidator validator = new ReservationValidator();
     LocalDateTime nowKst = TimeConverter.nowKst();
 
@@ -146,26 +154,108 @@ class ReservationValidatorTest {
     }
 
     @Test
-    void 수정한_예약날짜와_시간이_지금보다_과거이면_예외가_발생한다() {
-        ReservationUpdateRequest request = new ReservationUpdateRequest(
-                nowKst.toLocalDate().minusDays(1),
-                nowKst.toLocalTime().minusHours(1),
-                null, null, null,
-                null, null, null
+    void 수정한_예약이_정상적이면_예약_수정에_성공한다() {
+        Reservation reservation = Reservation.builder()
+                .id(1L)
+                .menu("브라우니")
+                .customerName("오종혁")
+                .customerPhone("010-1234-5678")
+                .amount(5000)
+                .pickupTime(nowKst.toLocalTime().plusHours(1))
+                .pickupDate(nowKst.toLocalDate().plusDays(1))
+                .paymentCompleted(false)
+                .pickupCompleted(false)
+                .build();
+
+        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
+                nowKst.toLocalDate().plusDays(1),
+                nowKst.toLocalTime().plusHours(1),
+                "오종혁", "010-1234-1234", "에그파이",
+                5000, true, true
         );
 
-        assertThatThrownBy(() -> validator.validateUpdatePickupTime(request))
-                .isInstanceOf(IllegalArgumentException.class);
+        reservation.updateFrom(updateRequest);
+
+        assertThatCode(() -> validator.updateValidate(updateRequest))
+                .doesNotThrowAnyException();
     }
 
     @Test
-    void 수정한_예약날짜와_시간이_지금보다_미래이면_정상작동한다(){
-        ReservationUpdateRequest request = new ReservationUpdateRequest(
+    void 예약을_수정할_땐_현재보다_과거여도_수정에_성공한다() {
+        Reservation reservation = Reservation.builder()
+                .id(1L)
+                .menu("브라우니")
+                .customerName("오종혁")
+                .customerPhone("010-1234-5678")
+                .amount(5000)
+                .pickupTime(nowKst.toLocalTime().plusHours(1))
+                .pickupDate(nowKst.toLocalDate().plusDays(1))
+                .paymentCompleted(false)
+                .pickupCompleted(false)
+                .build();
+
+        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
+                nowKst.toLocalDate().minusDays(1),
+                nowKst.toLocalTime().minusHours(1),
+                "오종혁", "010-1234-1234", "에그파이",
+                5000, true, true
+        );
+
+        reservation.updateFrom(updateRequest);
+
+        assertThatCode(() -> validator.updateValidate(updateRequest))
+                .doesNotThrowAnyException();
+    }
+
+    @Test
+    void 수정한_예약의_예약자_이름이_빈_값이면_예외가_발생한다() {
+        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
                 nowKst.toLocalDate().plusDays(1),
                 nowKst.toLocalTime().plusHours(1),
-                null, null, null,
-                null, null, null
+                null, "010-1234-1234", "에그파이",
+                5500, true, true
         );
-        validator.validateUpdatePickupTime(request);
+        assertThatThrownBy(() -> validator.updateValidate(updateRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ERROR_MESSAGE_RESERVATION_PERSON_NAME_ESSENTIAL);
+    }
+
+    @Test
+    void 수정한_예약의_메뉴가_빈_값이면_예외가_발생한다() {
+        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
+                nowKst.toLocalDate().plusDays(1),
+                nowKst.toLocalTime().plusHours(1),
+                "오종혁", "010-1234-1234", null,
+                5500, true, true
+        );
+        assertThatThrownBy(() -> validator.updateValidate(updateRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ERROR_MESSAGE_MENU_ESSENTIAL);
+    }
+
+    @Test
+    void 수정한_예약의_예약자_번호가_빈_값이면_예외가_발생한다() {
+        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
+                nowKst.toLocalDate().plusDays(1),
+                nowKst.toLocalTime().plusHours(1),
+                "오종혁", null, "에그파이",
+                5500, true, true
+        );
+        assertThatThrownBy(() -> validator.updateValidate(updateRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ERROR_MESSAGE_RESERVATION_PERSON_PHONE_ESSENTIAL);
+    }
+
+    @Test
+    void 수정한_예약의_예약_금액이_빈_값이면_예외가_발생한다() {
+        ReservationUpdateRequest updateRequest = new ReservationUpdateRequest(
+                nowKst.toLocalDate().plusDays(1),
+                nowKst.toLocalTime().plusHours(1),
+                "오종혁", "010-1234-1234", "에그파이",
+                null, true, true
+        );
+        assertThatThrownBy(() -> validator.updateValidate(updateRequest))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage(ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NULL);
     }
 }
