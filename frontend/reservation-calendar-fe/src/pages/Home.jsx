@@ -192,26 +192,26 @@ export default function Home({ onLogout }) {
 
   useEffect(() => {
     fetchMonthReservations(currentYear, currentMonth);
-    if (currentYear === currentYearKST && currentMonth === currentMonthKST) {
-      const todayFormatted = `${currentYear}-${String(
-        currentMonth + 1
-      ).padStart(2, "0")}-${String(currentDayKST).padStart(2, "0")}`;
+    setDayReservations([]);
 
-      fetchDayReservations(todayFormatted);
+    if (currentYear === currentYearKST && currentMonth === currentMonthKST) {
+      // 현재 월로 돌아오면 오늘 날짜로 포커싱을 유지
+      setSelectedDay(currentDayKST);
     } else {
-      setDayReservations([]);
+      // 다른 월로 이동하면 날짜 선택을 해제
+      setSelectedDay(null);
     }
   }, [currentYear, currentMonth]);
 
   useEffect(() => {
-    if (selectedDay) {
-      const dateFormatted = `${currentYear}-${String(currentMonth + 1).padStart(
-        2,
-        "0"
-      )}-${String(selectedDay).padStart(2, "0")}`;
-      fetchDayReservations(dateFormatted);
+    if (selectedDay !== null) {
+      const seletedDateFormatted = `${currentYear}-${String(
+        currentMonth + 1
+      ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+
+      fetchDayReservations(seletedDateFormatted);
     }
-  }, [selectedDay]);
+  }, [currentYear, currentMonth, selectedDay]);
 
   return (
     <div className="flex h-screen bg-gray-50">
