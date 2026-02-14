@@ -5,13 +5,17 @@ services:
       - "5433:5432"
 
   backend:
-    build: ./backend/reservation-calendar-be
+    build:
+      context: ./backend/reservation-calendar-be
+      dockerfile: Dockerfile.prod.dockerfile
     restart: always
     ports:
       - "8080:8080"
 
   frontend:
-    build: ./frontend/reservation-calendar-fe
+    build:
+      context: ./frontend/reservation-calendar-fe
+      dockerfile: Dockerfile.prod.dockerfile
     restart: always
     ports:
       - "80:80" # 배포 시엔 Nginx가 80포트로 서비스
