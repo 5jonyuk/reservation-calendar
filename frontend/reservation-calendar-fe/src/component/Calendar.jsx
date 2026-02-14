@@ -20,7 +20,7 @@ export default function Calendar({
   const getReservationsForDate = (day) => {
     const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(
       2,
-      "0"
+      "0",
     )}-${String(day).padStart(2, "0")}`;
     return reservations.filter((r) => r.pickupDate === dateStr);
   };
@@ -33,21 +33,21 @@ export default function Calendar({
   return (
     <div className="bg-white rounded-lg shadow-sm h-full p-6">
       <div className="relative flex items-center justify-between mb-6">
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3">
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-3 ">
           <button
             onClick={onPrevMonth}
-            className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
+            className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer text-2xl"
           >
             ◀
           </button>
 
-          <h2 className="text-xl font-bold">
+          <h2 className="text-2xl font-bold">
             {currentYear}년 {currentMonth + 1}월
           </h2>
 
           <button
             onClick={onNextMonth}
-            className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer"
+            className="p-2 hover:bg-gray-100 rounded-full transition cursor-pointer text-2xl"
           >
             ▶
           </button>
@@ -98,23 +98,27 @@ export default function Calendar({
             <div
               key={day}
               onClick={() => onDateSelect(day)}
-              className={`min-h-24 p-2 border cursor-pointer transition-all rounded flex flex-col items-center justify-between ${
+              className={`min-h-24 p-2 border cursor-pointer transition-all rounded flex flex-col items-start justify-start gap-3 ${
                 isSelected
                   ? "bg-green-50 border-green-400 shadow-sm"
                   : "bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300"
               }`}
             >
               <div
-                className={`text-sm font-medium  ${
+                className={`text-sm font-medium ml-1 ${
                   isSunday ? "text-red-500" : "text-gray-700"
                 }`}
               >
                 {day}
               </div>
-
               {/* 예약 있는 날 표시 */}
               {hasReservations && (
-                <div className="w-2 h-2 mt-1 rounded-full bg-green-400" />
+                <div className="ml-1.5 flex items-center gap-1">
+                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <span className="text-[15px] font-medium text-[#5C3A21]">
+                    +{reservationsForDay.length}
+                  </span>
+                </div>
               )}
             </div>
           );
