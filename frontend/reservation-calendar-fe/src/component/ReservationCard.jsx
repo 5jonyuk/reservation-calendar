@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function ReservationCard({
   reservation,
@@ -7,6 +7,9 @@ export default function ReservationCard({
   onDeleteClick,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [displayMenu, setDisplayMenu] = useState(reservation.menu ?? "");
+  const menuRef = useRef(null);
+  const menuSuffix = "···";
 
   const toggleDropdown = (e) => {
     e.stopPropagation();
@@ -24,9 +27,76 @@ export default function ReservationCard({
     return `${formattedHours}시 ${formattedMinutes}분`;
   };
 
+  useEffect(() => {
+    const element = menuRef.current;
+    if (!element) return;
+
+    const context = document.createElement("canvas").getContext("2d");
+    if (!context) {
+      setDisplayMenu(reservation.menu ?? "");
+      return;
+    }
+
+    const measureTextWidth = (text) => context.measureText(text).width;
+
+    const updateMenuText = () => {
+      const fullMenu = reservation.menu ?? "";
+      const availableWidth = element.clientWidth;
+
+      if (!fullMenu || availableWidth <= 0) {
+        setDisplayMenu(fullMenu);
+        return;
+      }
+
+      const computedStyle = window.getComputedStyle(element);
+      context.font = `${computedStyle.fontWeight} ${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+
+      if (measureTextWidth(fullMenu) <= availableWidth) {
+        setDisplayMenu(fullMenu);
+        return;
+      }
+
+      let low = 0;
+      let high = fullMenu.length;
+
+      while (low < high) {
+        const mid = Math.ceil((low + high) / 2);
+        const candidate = `${fullMenu.slice(0, mid)}${menuSuffix}`;
+
+        if (measureTextWidth(candidate) <= availableWidth) {
+          low = mid;
+        } else {
+          high = mid - 1;
+        }
+      }
+
+      setDisplayMenu(`${fullMenu.slice(0, low)}${menuSuffix}`);
+    };
+
+    updateMenuText();
+
+    window.addEventListener("resize", updateMenuText);
+
+    if (typeof ResizeObserver === "undefined") {
+      return () => {
+        window.removeEventListener("resize", updateMenuText);
+      };
+    }
+
+    const resizeObserver = new ResizeObserver(updateMenuText);
+    resizeObserver.observe(element);
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", updateMenuText);
+    };
+  }, [reservation.menu]);
+
   return (
     <div
-      className="bg-white rounded-lg p-6 relative hover:shadow-sm transition cursor-pointer h-auto"
+      className={`rounded-lg p-6 relative hover:shadow-sm transition cursor-pointer h-auto ${
+        reservation.pickupCompleted ? "bg-gray-200/60" : "bg-white"
+      }`}
       onClick={() => onSelectDetail(reservation.id)}
     >
       <div className="flex items-start justify-between mb-2">
@@ -68,7 +138,14 @@ export default function ReservationCard({
         </div>
       </div>
 
-      <div className="text-2xl font-bold mb-3 text-blue-600">
+      <div
+        ref={menuRef}
+        className="text-2xl font-bold mb-3 text-[#5C3A21] overflow-hidden whitespace-nowrap"
+        title={reservation.menu}
+      >
+        {displayMenu}
+      </div>
+      <div className="text-xl font-bold mb-3 text-[#5C3A21]">
         {reservation.amount.toLocaleString()}원
       </div>
 

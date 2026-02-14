@@ -52,7 +52,9 @@ public final class ReservationMapper {
                 reservation.getCustomerName(),
                 reservation.getPickupDate(),
                 reservation.getPickupTime(),
-                reservation.getAmount()
+                reservation.getPickupCompleted(),
+                reservation.getAmount(),
+                reservation.getMenu()
         );
     }
 

@@ -8,6 +8,8 @@ public record ReservationDayResponse(
         String customerName,
         LocalDate pickupDate,
         LocalTime pickupTime,
-        Integer amount
+        Boolean pickupCompleted,
+        Integer amount,
+        String menu
 ) {
 }

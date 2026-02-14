@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import ReservationCard from "./ReservationCard";
 import Icon from "./Icon";
 
@@ -17,6 +18,29 @@ export default function ReservationView({
       <line x1="21" y1="12" x2="9" y2="12" />
     </Icon>
   );
+
+  const parsePickupTimeToMinutes = (pickupTime) => {
+    if (!pickupTime || typeof pickupTime !== "string") return Number.MAX_SAFE_INTEGER;
+
+    const [hours = "99", minutes = "59"] = pickupTime.split(":");
+    return Number(hours) * 60 + Number(minutes);
+  };
+
+  const sortedReservations = useMemo(() => {
+    return [...selectedDateReservations].sort((a, b) => {
+      const pickupCompletedDiff =
+        Number(Boolean(a.pickupCompleted)) - Number(Boolean(b.pickupCompleted));
+      if (pickupCompletedDiff !== 0) return pickupCompletedDiff;
+
+      const pickupTimeDiff =
+        parsePickupTimeToMinutes(a.pickupTime) -
+        parsePickupTimeToMinutes(b.pickupTime);
+      if (pickupTimeDiff !== 0) return pickupTimeDiff;
+
+      return Number(a.id) - Number(b.id);
+    });
+  }, [selectedDateReservations]);
+
   return (
     <div className="relative bg-gray-50 p-6 overflow-auto h-screen">
       <div className="absolute left-0 top-6 bottom-6 border-l border-gray-300" />
@@ -49,7 +73,7 @@ export default function ReservationView({
 
       {selectedDay && selectedDateReservations.length > 0 && (
         <div className="space-y-4">
-          {selectedDateReservations.map((reservation) => (
+          {sortedReservations.map((reservation) => (
             <ReservationCard
               key={reservation.id}
               reservation={reservation}
