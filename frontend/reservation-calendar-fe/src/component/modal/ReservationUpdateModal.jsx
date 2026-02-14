@@ -101,7 +101,7 @@ export default function ReservationUpdateModal({
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            예약금액 <span className="text-red-400"> *</span>
+            총 금액 <span className="text-red-400"> *</span>
           </label>
           <input
             name="amount"

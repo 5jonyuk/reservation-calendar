@@ -93,7 +93,7 @@ export default function ReservationDetailModal({
 
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            예약 금액
+            총 금액
           </label>
           <input
             type="text"

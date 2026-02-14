@@ -12,7 +12,7 @@ export default function ReservationAddModal({
 }) {
   const selectedDate = `${currentYear}-${String(currentMonth + 1).padStart(
     2,
-    "0"
+    "0",
   )}-${String(selectedDay).padStart(2, "0")}`;
 
   const [formData, setFormData] = useState({
@@ -119,9 +119,9 @@ export default function ReservationAddModal({
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
           />
 
-          {/* 예약금액 */}
+          {/* 총 금액 */}
           <label className="block text-sm font-medium text-gray-600">
-            예약 금액 <span className="text-red-400"> *</span>
+            총 금액 <span className="text-red-400"> *</span>
           </label>
           <input
             required
