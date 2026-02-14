@@ -9,6 +9,7 @@ export default function ReservationView({
   onSelectDetail,
   onEditClick,
   onDeleteClick,
+  onCompleteClick,
   onLogout,
 }) {
   const LogoutIcon = (props) => (
@@ -80,6 +81,7 @@ export default function ReservationView({
               onSelectDetail={() => onSelectDetail(reservation.id)}
               onEditClick={() => onEditClick(reservation.id)}
               onDeleteClick={() => onDeleteClick(reservation.id)}
+              onCompleteClick={() => onCompleteClick(reservation.id)}
             />
           ))}
         </div>

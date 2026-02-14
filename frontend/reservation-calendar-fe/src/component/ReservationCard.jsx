@@ -5,6 +5,7 @@ export default function ReservationCard({
   onSelectDetail,
   onEditClick,
   onDeleteClick,
+  onCompleteClick,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [displayMenu, setDisplayMenu] = useState(reservation.menu ?? "");
@@ -102,8 +103,20 @@ export default function ReservationCard({
       <div className="flex items-start justify-between mb-2">
         <span className="text-sm text-gray-600">{reservation.pickupDate}</span>
 
-        {/* 드롭다운 버튼 */}
-        <div className="relative">
+        <div className="relative flex items-center gap-2">
+          {!reservation.pickupCompleted && (
+            <button
+              className="px-2.5 py-1 text-xs font-semibold text-white bg-[#8B5E3C] hover:bg-[#5C3A21] rounded-md cursor-pointer transition"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCompleteClick();
+              }}
+            >
+              완료
+            </button>
+          )}
+
+          {/* 드롭다운 버튼 */}
           <button
             className=" text-gray-400 hover:text-gray-600 text-xl leading-none cursor-pointer transition"
             onClick={toggleDropdown}

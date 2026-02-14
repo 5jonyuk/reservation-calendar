@@ -159,15 +159,48 @@ export default function Home({ onLogout }) {
         `${apiUrl}/api/reservation/${reservationId}`,
         updatedReservation
       );
-      setSelectedReservation({
-        ...response.data,
-        createdAt: selectedReservation.createdAt,
+      setSelectedReservation((prev) => {
+        if (!prev || prev.id !== reservationId) return prev;
+
+        return {
+          ...response.data,
+          createdAt: prev.createdAt,
+        };
       });
+
+      setDayReservations((prev) =>
+        prev.map((reservation) =>
+          reservation.id === reservationId
+            ? { ...reservation, ...updatedReservation }
+            : reservation
+        )
+      );
+
       alert("예약이 수정되었습니다.");
     } catch (error) {
       const errorMessage = `${error.response.data.message}`;
       alert(errorMessage);
       throw error;
+    }
+  };
+
+  const handlePickupComplete = async (reservationId) => {
+    try {
+      const response = await axios.get(`${apiUrl}/api/reservation/${reservationId}`);
+      const reservationDetail = response.data;
+
+      await handleEdit(reservationId, {
+        pickupDate: reservationDetail.pickupDate,
+        pickupTime: reservationDetail.pickupTime,
+        customerName: reservationDetail.customerName,
+        customerPhone: reservationDetail.customerPhone,
+        menu: reservationDetail.menu,
+        amount: reservationDetail.amount,
+        paymentCompleted: reservationDetail.paymentCompleted,
+        pickupCompleted: true,
+      });
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -279,6 +312,7 @@ export default function Home({ onLogout }) {
           onSelectDetail={handleSelectDetail}
           onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
+          onCompleteClick={handlePickupComplete}
           onLogout={handleLogout}
         />
       </div>
