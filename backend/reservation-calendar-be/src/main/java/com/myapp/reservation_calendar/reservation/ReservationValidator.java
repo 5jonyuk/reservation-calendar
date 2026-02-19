@@ -13,7 +13,7 @@ public class ReservationValidator {
     private static final String ERROR_MESSAGE_RESERVATION_PERSON_NAME_ESSENTIAL = "[ERROR] 예약자 이름은 필수 입력입니다.";
     private static final String ERROR_MESSAGE_MENU_ESSENTIAL = "[ERROR] 메뉴 이름은 필수 입력입니다.";
     private static final String ERROR_MESSAGE_RESERVATION_PERSON_PHONE_ESSENTIAL = "[ERROR] 예약자 번호는 필수 입력입니다.";
-    private static final String ERROR_MESSAGE_INVALID_PHONE_REGEX = "[ERROR] 연락처 형식이 올바르지 않습니다. 예) 010-1234-5678";
+    private static final String ERROR_MESSAGE_INVALID_PHONE_REGEX = "[ERROR] 연락처 형식이 올바르지 않습니다.";
     private static final String ERROR_MESSAGE_RESERVATION_TIME = "[ERROR] 예약 시간은 현재 시간 이후로 설정해야 합니다.";
     private static final String ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NULL = "[ERROR] 예약 금액은 빈 값일 수 없습니다.";
     private static final String ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NEGATIVE = "[ERROR] 예약금액은 음수일 수 없습니다.";
@@ -57,7 +57,7 @@ public class ReservationValidator {
         if (customerPhone == null || customerPhone.isBlank()) {
             throw new IllegalArgumentException(ERROR_MESSAGE_RESERVATION_PERSON_PHONE_ESSENTIAL);
         }
-        if (!customerPhone.matches("^010-\\d{4}-\\d{4}$")) {
+        if (!customerPhone.matches("^\\d{3}-\\d{4}-\\d{4}$")) {
             throw new IllegalArgumentException(ERROR_MESSAGE_INVALID_PHONE_REGEX);
         }
     }

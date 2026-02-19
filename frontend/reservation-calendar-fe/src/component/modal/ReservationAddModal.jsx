@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import customStyles from "./ModalStyle";
+import PhoneNumberInput from "../PhoneNumberInput";
 
 export default function ReservationAddModal({
   currentYear,
@@ -31,6 +32,7 @@ export default function ReservationAddModal({
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -39,7 +41,7 @@ export default function ReservationAddModal({
 
   const handleSaveClick = () => {
     if (!formData.customerName || !formData.customerPhone || !formData.menu) {
-      alert("이름과 연락처, 메뉴는 필수 입력값입니다.");
+      alert("이름, 연락처, 메뉴, 총 금액은 필수 입력값입니다.");
       return;
     }
     setConfirmOpen(true);
@@ -99,13 +101,13 @@ export default function ReservationAddModal({
           <label className="block text-sm font-medium text-gray-600 mb-1">
             연락처
           </label>
-          <input
+          <PhoneNumberInput
             required
-            type="tel"
             name="customerPhone"
-            placeholder="010-1234-1234"
             value={formData.customerPhone}
-            onChange={handleChange}
+            onChange={(phone) =>
+              setFormData((prev) => ({ ...prev, customerPhone: phone }))
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
