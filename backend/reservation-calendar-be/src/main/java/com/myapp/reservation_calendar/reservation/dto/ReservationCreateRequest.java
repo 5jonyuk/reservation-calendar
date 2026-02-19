@@ -8,6 +8,7 @@ public record ReservationCreateRequest(
         String customerPhone,
         String menu,
         Integer amount,
+        String memo,
         LocalDate pickupDate,
         LocalTime pickupTime,
         Boolean paymentCompleted,

@@ -157,6 +157,18 @@ export default function ReservationDetailModal({
 
         <div>
           <label className="block text-sm font-medium text-gray-600 mb-1">
+            메모
+          </label>
+          <textarea
+            value={reservation.memo || ""}
+            readOnly
+            rows={3}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800 resize-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             예약 생성 시간
           </label>
           <input

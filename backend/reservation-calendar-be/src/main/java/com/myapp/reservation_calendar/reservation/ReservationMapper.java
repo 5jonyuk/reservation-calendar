@@ -14,6 +14,7 @@ public final class ReservationMapper {
                 reservation.getCustomerPhone(),
                 reservation.getMenu(),
                 reservation.getAmount(),
+                reservation.getMemo(),
                 reservation.getPickupDate(),
                 reservation.getPickupTime(),
                 reservation.getPaymentCompleted(),
@@ -39,6 +40,7 @@ public final class ReservationMapper {
                 reservation.getCustomerPhone(),
                 reservation.getMenu(),
                 reservation.getAmount(),
+                reservation.getMemo(),
                 reservation.getPaymentCompleted(),
                 reservation.getPickupCompleted(),
                 reservation.getCreatedAt(),
@@ -54,7 +56,8 @@ public final class ReservationMapper {
                 reservation.getPickupTime(),
                 reservation.getPickupCompleted(),
                 reservation.getAmount(),
-                reservation.getMenu()
+                reservation.getMenu(),
+                reservation.getMemo()
         );
     }
 
@@ -67,6 +70,7 @@ public final class ReservationMapper {
                 reservation.getCustomerPhone(),
                 reservation.getMenu(),
                 reservation.getAmount(),
+                reservation.getMemo(),
                 reservation.getPaymentCompleted(),
                 reservation.getPickupCompleted(),
                 reservation.getLastUpdatedAt()

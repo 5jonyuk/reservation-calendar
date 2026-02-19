@@ -10,6 +10,7 @@ public record ReservationCreateResponse(
         String customerPhone,
         String menu,
         Integer amount,
+        String memo,
         LocalDate pickupDate,
         LocalTime pickupTime,
         Boolean paymentCompleted,

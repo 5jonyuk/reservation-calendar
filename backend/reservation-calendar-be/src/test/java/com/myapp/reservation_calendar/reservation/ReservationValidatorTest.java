@@ -171,7 +171,7 @@ class ReservationValidatorTest {
                 nowKst.toLocalDate().plusDays(1),
                 nowKst.toLocalTime().plusHours(1),
                 "오종혁", "010-1234-1234", "에그파이",
-                5000, true, true
+                5000, "메모 테스트", true, true
         );
 
         reservation.updateFrom(updateRequest);
@@ -198,7 +198,7 @@ class ReservationValidatorTest {
                 nowKst.toLocalDate().minusDays(1),
                 nowKst.toLocalTime().minusHours(1),
                 "오종혁", "010-1234-1234", "에그파이",
-                5000, true, true
+                5000, null, true, true
         );
 
         reservation.updateFrom(updateRequest);
@@ -213,7 +213,7 @@ class ReservationValidatorTest {
                 nowKst.toLocalDate().plusDays(1),
                 nowKst.toLocalTime().plusHours(1),
                 null, "010-1234-1234", "에그파이",
-                5500, true, true
+                5500, null, true, true
         );
         assertThatThrownBy(() -> validator.updateValidate(updateRequest))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -226,7 +226,7 @@ class ReservationValidatorTest {
                 nowKst.toLocalDate().plusDays(1),
                 nowKst.toLocalTime().plusHours(1),
                 "오종혁", "010-1234-1234", null,
-                5500, true, true
+                5500, null, true, true
         );
         assertThatThrownBy(() -> validator.updateValidate(updateRequest))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -239,7 +239,7 @@ class ReservationValidatorTest {
                 nowKst.toLocalDate().plusDays(1),
                 nowKst.toLocalTime().plusHours(1),
                 "오종혁", null, "에그파이",
-                5500, true, true
+                5500, null, true, true
         );
         assertThatThrownBy(() -> validator.updateValidate(updateRequest))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -252,7 +252,7 @@ class ReservationValidatorTest {
                 nowKst.toLocalDate().plusDays(1),
                 nowKst.toLocalTime().plusHours(1),
                 "오종혁", "010-1234-1234", "에그파이",
-                null, true, true
+                null, null, true, true
         );
         assertThatThrownBy(() -> validator.updateValidate(updateRequest))
                 .isInstanceOf(IllegalArgumentException.class)

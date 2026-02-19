@@ -38,6 +38,7 @@ class ReservationServiceTest {
                 "010-1234-5678",
                 "브라우니",
                 5000,
+                "메모 테스트",
                 nowKst.toLocalDate(),
                 nowKst.toLocalTime().plusHours(1),
                 false,
@@ -73,6 +74,7 @@ class ReservationServiceTest {
                 "010-1234-5678",
                 "브라우니",
                 -5000,
+                null,
                 nowKst.toLocalDate(),
                 nowKst.toLocalTime().plusHours(1),
                 false,
@@ -194,7 +196,7 @@ class ReservationServiceTest {
                 nowKst.toLocalDate().plusDays(1),
                 LocalTime.of(12, 0),
                 null, null, null,
-                null, null, null
+                null, null, null, null
         );
         when(reservationJpaRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -221,7 +223,7 @@ class ReservationServiceTest {
 //                nowKst.toLocalDate(),
 //                nowKst.toLocalTime().minusHours(1),
 //                null, null, null,
-//                null, null, null
+//                null, null, null, null
 //        );
 //
 //        doThrow(IllegalArgumentException.class)
@@ -249,13 +251,14 @@ class ReservationServiceTest {
         ReservationUpdateRequest request = new ReservationUpdateRequest(
                 null,null,
                 null, null, "쫀득쿠키, 에그파이",
-                12500, null, null
+                12500, "메모 테스트", null, null
         );
 
         Reservation updatedReservation = reservationService.updateReservation(id, request);
 
         assertThat(updatedReservation.getMenu()).isEqualTo("쫀득쿠키, 에그파이");
         assertThat(updatedReservation.getAmount()).isEqualTo(12500);
+        assertThat(updatedReservation.getMemo()).isEqualTo("메모 테스트");
     }
 
     @Test

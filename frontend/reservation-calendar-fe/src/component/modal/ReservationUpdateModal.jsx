@@ -135,6 +135,18 @@ export default function ReservationUpdateModal({
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            메모
+          </label>
+          <textarea
+            name="memo"
+            value={formData.memo || ""}
+            onChange={handleChange}
+            rows={3}
+            placeholder="요청사항이나 참고사항을 입력하세요."
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800 resize-none"
+          />
+
           <div className="space-x-3">
             <label>
               <input

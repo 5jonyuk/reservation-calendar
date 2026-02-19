@@ -197,6 +197,7 @@ export default function Home({ onLogout }) {
         customerName: reservationDetail.customerName,
         customerPhone: reservationDetail.customerPhone,
         menu: reservationDetail.menu,
+        memo: reservationDetail.memo,
         amount: reservationDetail.amount,
         paymentCompleted: reservationDetail.paymentCompleted,
         pickupCompleted: true,

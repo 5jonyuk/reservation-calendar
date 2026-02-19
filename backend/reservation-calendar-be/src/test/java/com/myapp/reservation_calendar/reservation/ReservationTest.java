@@ -17,6 +17,7 @@ class ReservationTest {
                 "010-1234-5678",
                 "아메리카노",
                 3000,
+                "메모 테스트",
                 nowKtc.toLocalDate(),
                 nowKtc.toLocalTime().plusHours(1),
                 false,
@@ -29,6 +30,7 @@ class ReservationTest {
         assertThat(reservation.getCustomerPhone()).isEqualTo("010-1234-5678");
         assertThat(reservation.getMenu()).isEqualTo("아메리카노");
         assertThat(reservation.getAmount()).isEqualTo(3000);
+        assertThat(reservation.getMemo()).isEqualTo("메모 테스트");
         assertThat(reservation.getPickupDate()).isEqualTo(nowKtc.toLocalDate());
         assertThat(reservation.getPickupTime()).isEqualTo(nowKtc.toLocalTime().plusHours(1));
         assertThat(reservation.getPaymentCompleted()).isFalse();

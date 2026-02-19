@@ -12,6 +12,7 @@ public record ReservationUpdateResponse(
         String customerPhone,
         String menu,
         Integer amount,
+        String memo,
         Boolean paymentCompleted,
         Boolean pickupCompleted,
         LocalDateTime lastUpdatedAt

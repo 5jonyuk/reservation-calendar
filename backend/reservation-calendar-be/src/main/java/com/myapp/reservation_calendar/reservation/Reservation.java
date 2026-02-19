@@ -32,6 +32,9 @@ public class Reservation {
     @Column(nullable = false)
     private Integer amount;
 
+    @Column(length = 1000)
+    private String memo;
+
     private LocalDate pickupDate;
     private LocalTime pickupTime;
     private Boolean paymentCompleted;
@@ -48,6 +51,7 @@ public class Reservation {
                 .customerPhone(request.customerPhone())
                 .menu(request.menu())
                 .amount(request.amount())
+                .memo(request.memo())
                 .pickupDate(request.pickupDate())
                 .pickupTime(request.pickupTime())
                 .paymentCompleted(request.paymentCompleted())
@@ -62,6 +66,7 @@ public class Reservation {
         if (req.customerPhone() != null) this.customerPhone = req.customerPhone();
         if (req.menu() != null) this.menu = req.menu();
         if (req.amount() != null) this.amount = req.amount();
+        if (req.memo() != null) this.memo = req.memo();
         if (req.paymentCompleted() != null) this.paymentCompleted = req.paymentCompleted();
         if (req.pickupCompleted() != null) this.pickupCompleted = req.pickupCompleted();
     }

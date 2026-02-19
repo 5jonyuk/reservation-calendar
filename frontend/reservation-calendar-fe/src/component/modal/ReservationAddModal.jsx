@@ -19,6 +19,7 @@ export default function ReservationAddModal({
     customerName: "",
     customerPhone: "",
     menu: "",
+    memo: "",
     amount: "",
     pickupDate: selectedDate || "",
     pickupTime: "",
@@ -82,7 +83,7 @@ export default function ReservationAddModal({
 
         <div className="space-y-3">
           {/* 이름 */}
-          <label className="block text-sm font-medium text-gray-600">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             이름
             {/* <span className="text-red-400"> *</span> */}
           </label>
@@ -95,7 +96,7 @@ export default function ReservationAddModal({
           />
 
           {/* 연락처 */}
-          <label className="block text-sm font-medium text-gray-600">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             연락처
           </label>
           <input
@@ -109,7 +110,7 @@ export default function ReservationAddModal({
           />
 
           {/* 메뉴 */}
-          <label className="block text-sm font-medium text-gray-600">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             메뉴
           </label>
           <input
@@ -121,7 +122,7 @@ export default function ReservationAddModal({
           />
 
           {/* 총 금액 */}
-          <label className="block text-sm font-medium text-gray-600">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             총 금액
           </label>
           <input
@@ -134,7 +135,7 @@ export default function ReservationAddModal({
           />
 
           {/* 픽업 날짜 */}
-          <label className="block text-sm font-medium text-gray-600">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             픽업 날짜
           </label>
           <input
@@ -146,7 +147,7 @@ export default function ReservationAddModal({
           />
 
           {/* 픽업 시간 */}
-          <label className="block text-sm font-medium text-gray-600">
+          <label className="block text-sm font-medium text-gray-600 mb-1">
             픽업 시간
           </label>
           <input
@@ -155,6 +156,19 @@ export default function ReservationAddModal({
             value={formData.pickupTime}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
+          />
+
+          {/* 메모 */}
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            메모
+          </label>
+          <textarea
+            name="memo"
+            value={formData.memo}
+            onChange={handleChange}
+            rows={3}
+            placeholder="요청사항이나 참고사항을 입력하세요."
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800 resize-none"
           />
 
           {/* 체크박스 */}
@@ -184,7 +198,7 @@ export default function ReservationAddModal({
         </div>
 
         {/* 버튼 영역 */}
-        <div className="flex justify-end space-x-2 mt-6">
+        <div className="flex justify-end space-x-2">
           <button
             onClick={onClose}
             className="px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded cursor-pointer transition"

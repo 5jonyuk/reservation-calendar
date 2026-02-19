@@ -10,6 +10,7 @@ public record ReservationDayResponse(
         LocalTime pickupTime,
         Boolean pickupCompleted,
         Integer amount,
-        String menu
+        String menu,
+        String memo
 ) {
 }
