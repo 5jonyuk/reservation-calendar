@@ -14,7 +14,7 @@ public class ReservationValidator {
     private static final String ERROR_MESSAGE_MENU_ESSENTIAL = "[ERROR] 메뉴 이름은 필수 입력입니다.";
     private static final String ERROR_MESSAGE_RESERVATION_PERSON_PHONE_ESSENTIAL = "[ERROR] 예약자 번호는 필수 입력입니다.";
     private static final String ERROR_MESSAGE_INVALID_PHONE_REGEX = "[ERROR] 연락처 형식이 올바르지 않습니다.";
-    private static final String ERROR_MESSAGE_RESERVATION_TIME = "[ERROR] 예약 시간은 현재 시간 이후로 설정해야 합니다.";
+//    private static final String ERROR_MESSAGE_RESERVATION_TIME = "[ERROR] 예약 시간은 현재 시간 이후로 설정해야 합니다.";
     private static final String ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NULL = "[ERROR] 예약 금액은 빈 값일 수 없습니다.";
     private static final String ERROR_MESSAGE_RESERVATION_AMOUNT_NOT_NEGATIVE = "[ERROR] 예약금액은 음수일 수 없습니다.";
 
@@ -22,9 +22,9 @@ public class ReservationValidator {
         validateCustomerName(reservation.getCustomerName());
         validateMenu(reservation.getMenu());
         validateCustomerPhone(reservation.getCustomerPhone());
-        if (reservation.getPickupTime() != null) {
-            validatePickupTimeKst(reservation.getPickupDate(), reservation.getPickupTime());
-        }
+//        if (reservation.getPickupTime() != null) {
+//            validatePickupTimeKst(reservation.getPickupDate(), reservation.getPickupTime());
+//        }
         validateAmount(reservation.getAmount());
     }
 
@@ -62,15 +62,15 @@ public class ReservationValidator {
         }
     }
 
-    private void validatePickupTimeKst(LocalDate pickupDate, LocalTime pickupTime) {
-        LocalDateTime pickupDateTime = LocalDateTime.of(pickupDate, pickupTime);
-
-        LocalDateTime nowKstLocal = TimeConverter.nowKst();
-
-        if (pickupDateTime.isBefore(nowKstLocal)) {
-            throw new IllegalArgumentException(ERROR_MESSAGE_RESERVATION_TIME);
-        }
-    }
+//    private void validatePickupTimeKst(LocalDate pickupDate, LocalTime pickupTime) {
+//        LocalDateTime pickupDateTime = LocalDateTime.of(pickupDate, pickupTime);
+//
+//        LocalDateTime nowKstLocal = TimeConverter.nowKst();
+//
+//        if (pickupDateTime.isBefore(nowKstLocal)) {
+//            throw new IllegalArgumentException(ERROR_MESSAGE_RESERVATION_TIME);
+//        }
+//    }
 
     private void validateAmount(Integer amount) {
         if (amount == null) {
