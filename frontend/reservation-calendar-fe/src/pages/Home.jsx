@@ -94,7 +94,7 @@ export default function Home({ onLogout }) {
     try {
       if (!isCashed) {
         const response = await axios.get(
-          `${apiUrl}/api/reservation/${reservationId}`
+          `${apiUrl}/api/reservation/${reservationId}`,
         );
         setSelectedReservation(response.data);
       }
@@ -111,7 +111,7 @@ export default function Home({ onLogout }) {
     try {
       if (!isCashed) {
         const response = await axios.get(
-          `${apiUrl}/api/reservation/${reservationId}`
+          `${apiUrl}/api/reservation/${reservationId}`,
         );
         setSelectedReservation(response.data);
       }
@@ -128,7 +128,7 @@ export default function Home({ onLogout }) {
     try {
       if (!isCashed) {
         const response = await axios.get(
-          `${apiUrl}/api/reservation/${reservationId}`
+          `${apiUrl}/api/reservation/${reservationId}`,
         );
         setSelectedReservation(response.data);
       }
@@ -143,7 +143,7 @@ export default function Home({ onLogout }) {
     try {
       const response = await axios.post(
         `${apiUrl}/api/reservation`,
-        newReservation
+        newReservation,
       );
       alert("예약이 추가되었습니다.");
     } catch (error) {
@@ -157,7 +157,7 @@ export default function Home({ onLogout }) {
     try {
       const response = await axios.patch(
         `${apiUrl}/api/reservation/${reservationId}`,
-        updatedReservation
+        updatedReservation,
       );
       setSelectedReservation((prev) => {
         if (!prev || prev.id !== reservationId) return prev;
@@ -172,8 +172,8 @@ export default function Home({ onLogout }) {
         prev.map((reservation) =>
           reservation.id === reservationId
             ? { ...reservation, ...updatedReservation }
-            : reservation
-        )
+            : reservation,
+        ),
       );
 
       alert("예약이 수정되었습니다.");
@@ -186,7 +186,9 @@ export default function Home({ onLogout }) {
 
   const handlePickupComplete = async (reservationId) => {
     try {
-      const response = await axios.get(`${apiUrl}/api/reservation/${reservationId}`);
+      const response = await axios.get(
+        `${apiUrl}/api/reservation/${reservationId}`,
+      );
       const reservationDetail = response.data;
 
       await handleEdit(reservationId, {
@@ -207,7 +209,7 @@ export default function Home({ onLogout }) {
   const handleDelete = async (reservationId) => {
     try {
       const response = await axios.delete(
-        `${apiUrl}/api/reservation/${reservationId}`
+        `${apiUrl}/api/reservation/${reservationId}`,
       );
       setSelectedReservation(null);
       setModalMode(modalModes.NULL);
@@ -254,7 +256,7 @@ export default function Home({ onLogout }) {
   useEffect(() => {
     if (selectedDay !== null) {
       const seletedDateFormatted = `${currentYear}-${String(
-        currentMonth + 1
+        currentMonth + 1,
       ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
 
       fetchDayReservations(seletedDateFormatted);

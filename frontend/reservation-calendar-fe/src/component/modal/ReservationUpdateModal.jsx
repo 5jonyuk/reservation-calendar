@@ -67,18 +67,19 @@ export default function ReservationUpdateModal({
 
         <div className="space-y-3">
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            이름 <span className="text-red-400"> *</span>
+            이름
+            {/* <span className="text-red-400"> *</span> */}
           </label>
           <input
             required
             name="customerName"
             value={formData.customerName || ""}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            연락처 <span className="text-red-400"> *</span>
+            연락처
           </label>
           <input
             required
@@ -86,22 +87,22 @@ export default function ReservationUpdateModal({
             placeholder="010-1234-1234"
             value={formData.customerPhone || ""}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            메뉴 <span className="text-red-400"> *</span>
+            메뉴
           </label>
           <input
             required
             name="menu"
             value={formData.menu || ""}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
-            총 금액 <span className="text-red-400"> *</span>
+            총 금액
           </label>
           <input
             name="amount"
@@ -109,7 +110,7 @@ export default function ReservationUpdateModal({
             required
             value={formData.amount || ""}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -120,7 +121,7 @@ export default function ReservationUpdateModal({
             type="date"
             value={formData.pickupDate || ""}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           <label className="block text-sm font-medium text-gray-600 mb-1">
@@ -131,13 +132,14 @@ export default function ReservationUpdateModal({
             type="time"
             value={formData.pickupTime || ""}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           <div className="space-x-3">
             <label>
               <input
                 type="checkbox"
+                className="accent-gray-300"
                 name="paymentCompleted"
                 checked={formData.paymentCompleted || false}
                 onChange={handleChange}
@@ -147,6 +149,7 @@ export default function ReservationUpdateModal({
             <label>
               <input
                 type="checkbox"
+                className="accent-gray-300"
                 name="pickupCompleted"
                 checked={formData.pickupCompleted || false}
                 onChange={handleChange}
@@ -165,7 +168,7 @@ export default function ReservationUpdateModal({
           </button>
           <button
             onClick={handleSaveClick}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer transition"
+            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded cursor-pointer transition"
           >
             저장
           </button>
@@ -192,7 +195,7 @@ export default function ReservationUpdateModal({
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer"
+            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded cursor-pointer"
           >
             확인
           </button>

@@ -54,8 +54,8 @@ export default function Calendar({
         </div>
 
         <button
-          className="ml-auto px-4 py-2 bg-green-500 text-white text-sm font-semibold rounded-lg shadow 
-               hover:bg-green-600 active:bg-green-700 transition cursor-pointer"
+          className="ml-auto px-4 py-2 bg-[#8B5E3C] text-white text-sm font-semibold rounded-lg shadow-md 
+               hover:bg-[#5C3A21] hover:shadow-lg transition cursor-pointer"
           onClick={() => onAddClick()}
         >
           추가하기
@@ -67,7 +67,7 @@ export default function Calendar({
         {weekDays.map((day, idx) => (
           <div
             key={day}
-            className={`text-center text-sm font-semibold py-2 bg-green-50 rounded ${
+            className={`text-center text-sm font-semibold py-2 bg-[#F6EFE9] rounded ${
               idx === 0 ? " text-red-500" : "text-gray-600"
             }`}
           >
@@ -98,9 +98,9 @@ export default function Calendar({
             <div
               key={day}
               onClick={() => onDateSelect(day)}
-              className={`min-h-24 p-2 border cursor-pointer transition-all rounded flex flex-col items-start justify-start gap-3 ${
+              className={`min-h-24 p-2 border cursor-pointer transition-all rounded flex flex-col items-start justify-start ${
                 isSelected
-                  ? "bg-green-50 border-green-400 shadow-sm"
+                  ? "bg-[#F6EFE9] border-[#D7C3B3] shadow-sm"
                   : "bg-white border-gray-200 hover:bg-gray-50 hover:border-gray-300"
               }`}
             >
@@ -114,7 +114,7 @@ export default function Calendar({
               {/* 예약 있는 날 표시 */}
               {hasReservations && (
                 <div className="ml-1.5 flex items-center gap-1">
-                  <div className="w-2 h-2 rounded-full bg-green-400" />
+                  <div className="w-2.5 h-2.5 rounded-full border border-[#5C3A21] bg-[#F6EFE9]" />
                   <span className="text-[15px] font-medium text-[#5C3A21]">
                     +{reservationsForDay.length}
                   </span>

@@ -63,7 +63,7 @@ export default function ReservationDetailModal({
             type="text"
             value={reservation.customerName}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -75,7 +75,7 @@ export default function ReservationDetailModal({
             type="text"
             value={reservation.customerPhone}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -87,7 +87,7 @@ export default function ReservationDetailModal({
             type="text"
             value={reservation.menu}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -99,7 +99,7 @@ export default function ReservationDetailModal({
             type="text"
             value={`${reservation.amount.toLocaleString()}원`}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -111,7 +111,7 @@ export default function ReservationDetailModal({
             type="text"
             value={reservation.pickupDate}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -123,7 +123,7 @@ export default function ReservationDetailModal({
             type="text"
             value={formatTime(reservation.pickupTime)}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -135,7 +135,7 @@ export default function ReservationDetailModal({
             type="text"
             value={reservation.paymentCompleted ? "완료" : "미완료"}
             readOnly
-            className={`w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 ${
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 ${
               reservation.paymentCompleted ? "text-green-600" : "text-red-600"
             }`}
           />
@@ -149,7 +149,7 @@ export default function ReservationDetailModal({
             type="text"
             value={reservation.pickupCompleted ? "완료" : "미완료"}
             readOnly
-            className={`w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 ${
+            className={`w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 ${
               reservation.pickupCompleted ? "text-green-600" : "text-red-600"
             }`}
           />
@@ -163,7 +163,7 @@ export default function ReservationDetailModal({
             type="text"
             value={formatDateTimeKST(reservation.createdAt)}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
 
@@ -179,7 +179,7 @@ export default function ReservationDetailModal({
                 : "수정 없음"
             }
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none bg-gray-50 text-gray-800"
           />
         </div>
       </div>

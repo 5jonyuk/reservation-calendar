@@ -83,19 +83,20 @@ export default function ReservationAddModal({
         <div className="space-y-3">
           {/* 이름 */}
           <label className="block text-sm font-medium text-gray-600">
-            이름 <span className="text-red-400"> *</span>
+            이름
+            {/* <span className="text-red-400"> *</span> */}
           </label>
           <input
             required
             name="customerName"
             value={formData.customerName}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           {/* 연락처 */}
           <label className="block text-sm font-medium text-gray-600">
-            연락처 <span className="text-red-400"> *</span>
+            연락처
           </label>
           <input
             required
@@ -104,24 +105,24 @@ export default function ReservationAddModal({
             placeholder="010-1234-1234"
             value={formData.customerPhone}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           {/* 메뉴 */}
           <label className="block text-sm font-medium text-gray-600">
-            메뉴 <span className="text-red-400"> *</span>
+            메뉴
           </label>
           <input
             required
             name="menu"
             value={formData.menu}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           {/* 총 금액 */}
           <label className="block text-sm font-medium text-gray-600">
-            총 금액 <span className="text-red-400"> *</span>
+            총 금액
           </label>
           <input
             required
@@ -129,7 +130,7 @@ export default function ReservationAddModal({
             type="number"
             value={formData.amount}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           {/* 픽업 날짜 */}
@@ -141,7 +142,7 @@ export default function ReservationAddModal({
             type="date"
             value={formData.pickupDate}
             readOnly
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           {/* 픽업 시간 */}
@@ -153,7 +154,7 @@ export default function ReservationAddModal({
             type="time"
             value={formData.pickupTime}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 bg-gray-50 text-gray-800"
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] focus:border-[#8B5E3C] bg-gray-50 text-gray-800"
           />
 
           {/* 체크박스 */}
@@ -161,6 +162,7 @@ export default function ReservationAddModal({
             <label>
               <input
                 type="checkbox"
+                className="accent-gray-300"
                 name="paymentCompleted"
                 checked={formData.paymentCompleted}
                 onChange={handleChange}
@@ -171,6 +173,7 @@ export default function ReservationAddModal({
             <label>
               <input
                 type="checkbox"
+                className="accent-gray-300"
                 name="pickupCompleted"
                 checked={formData.pickupCompleted}
                 onChange={handleChange}
@@ -191,7 +194,7 @@ export default function ReservationAddModal({
 
           <button
             onClick={handleSaveClick}
-            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded cursor-pointer transition"
+            className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded cursor-pointer transition"
           >
             추가
           </button>
@@ -218,7 +221,7 @@ export default function ReservationAddModal({
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer"
+            className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 cursor-pointer"
           >
             확인
           </button>
